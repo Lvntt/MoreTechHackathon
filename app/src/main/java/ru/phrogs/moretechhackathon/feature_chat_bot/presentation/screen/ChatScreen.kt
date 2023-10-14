@@ -32,7 +32,7 @@ import ru.phrogs.moretechhackathon.R
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.components.ChatMessages
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.ChatState
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.MessageType
-import ru.phrogs.moretechhackathon.ui.theme.SystemBackgroundColor
+import ru.phrogs.moretechhackathon.presentation.ui.theme.SystemBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

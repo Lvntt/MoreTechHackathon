@@ -3,7 +3,6 @@ package ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.compone
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,13 +23,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import ru.phrogs.moretechhackathon.R
-import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.Messages
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.MessageType
-import ru.phrogs.moretechhackathon.ui.theme.NavigationButtonBorderColor
-import ru.phrogs.moretechhackathon.ui.theme.SystemBackgroundColor
-import ru.phrogs.moretechhackathon.ui.theme.SystemMessageColor
-import ru.phrogs.moretechhackathon.ui.theme.UserMessageBackgroundColor
-import ru.phrogs.moretechhackathon.ui.theme.UserMessageColor
+import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.Messages
+import ru.phrogs.moretechhackathon.presentation.ui.theme.NavigationButtonBorderColor
+import ru.phrogs.moretechhackathon.presentation.ui.theme.SystemBackgroundColor
+import ru.phrogs.moretechhackathon.presentation.ui.theme.SystemMessageColor
+import ru.phrogs.moretechhackathon.presentation.ui.theme.UserMessageBackgroundColor
+import ru.phrogs.moretechhackathon.presentation.ui.theme.UserMessageColor
 
 
 @Composable
