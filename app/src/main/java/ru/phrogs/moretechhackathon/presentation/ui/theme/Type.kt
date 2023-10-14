@@ -1,4 +1,4 @@
-package ru.phrogs.moretechhackathon.ui.theme
+package ru.phrogs.moretechhackathon.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
