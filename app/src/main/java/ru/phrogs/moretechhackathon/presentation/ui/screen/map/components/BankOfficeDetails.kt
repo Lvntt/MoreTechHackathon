@@ -60,7 +60,8 @@ fun BankOfficeDetails(
     todayOpenHours: OpenHoursElement,
     availableForBlind: Boolean,
     metroStation: List<String>?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRouteClick: () -> Unit = {}
 ) {
     var isIndividual by remember { mutableStateOf(true) }
 
@@ -120,14 +121,16 @@ fun BankOfficeDetails(
                 openHours = openHoursIndividual,
                 todayOpenHours = todayOpenHours,
                 availableForBlind = availableForBlind,
-                metroStation = metroStation
+                metroStation = metroStation,
+                onRouteClick = onRouteClick
             )
             false -> BankOfficeContent(
                 load = entitiesLoad,
                 openHours = openHours,
                 todayOpenHours = todayOpenHours,
                 availableForBlind = availableForBlind,
-                metroStation = metroStation
+                metroStation = metroStation,
+                onRouteClick = onRouteClick
             )
         }
     }
@@ -140,7 +143,8 @@ fun BankOfficeContent(
     todayOpenHours: OpenHoursElement,
     availableForBlind: Boolean,
     metroStation: List<String>?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRouteClick: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -301,7 +305,7 @@ fun BankOfficeContent(
         AccentButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.make_a_route),
-            onClick = { /*TODO*/ }
+            onClick = onRouteClick
         )
     }
 }

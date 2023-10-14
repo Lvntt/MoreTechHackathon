@@ -23,7 +23,6 @@ import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.directions.driving.DrivingSession.DrivingRouteListener
 import com.yandex.mapkit.directions.driving.VehicleOptions
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.runtime.Error
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +32,7 @@ import ru.phrogs.moretechhackathon.domain.usecase.GetAllBankCoordinatesUseCase
 import ru.phrogs.moretechhackathon.domain.usecase.GetBankInfoUseCase
 import ru.phrogs.moretechhackathon.presentation.uistate.map.BankInfoState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
+import ru.phrogs.moretechhackathon.presentation.uistate.map.RouteInfo
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
@@ -71,21 +71,20 @@ class MapViewModel(
     )
     var forceRedraw = mutableStateOf(false)
 
-    val routeState: State<Polyline?>
+    val routeState: State<RouteInfo?>
         get() = _routeState
-    private val _routeState = mutableStateOf<Polyline?>(null)
-    val routeFinishTimeState: State<Double?>
-        get() = _routeFinishTimeState
-    private val _routeFinishTimeState = mutableStateOf<Double?>(null)
+    private val _routeState = mutableStateOf<RouteInfo?>(null)
     private val drivingRouteListener = object : DrivingRouteListener {
         override fun onDrivingRoutes(p0: MutableList<DrivingRoute>) {
             val route = p0.first()
-            _routeState.value = route.geometry
-            route.routePosition.timeToFinish()
+            _routeState.value = RouteInfo(
+                route.geometry, routeAddress, (route.routePosition.timeToFinish() / 60).toInt()
+            )
         }
 
         override fun onDrivingRoutesError(p0: Error) {}
     }
+    private var routeAddress = ""
 
     init {
         loadBankCoordinates()
@@ -166,7 +165,17 @@ class MapViewModel(
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    fun buildRoute(start: Point, destination: Point) {
+    fun showRoute(address: String, start: Point, destination: Point) {
+        resetRoute()
+        routeAddress = address
+        buildRoute(start, destination)
+    }
+
+    fun resetRoute() {
+        _routeState.value = null
+    }
+
+    private fun buildRoute(start: Point, destination: Point) {
         val drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
         val drivingOptions = DrivingOptions().apply {
             routesCount = 1

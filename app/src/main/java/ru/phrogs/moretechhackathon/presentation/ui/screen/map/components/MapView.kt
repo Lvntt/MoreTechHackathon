@@ -14,6 +14,7 @@ import com.yandex.mapkit.map.PolylineMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import ru.phrogs.moretechhackathon.domain.entity.BankCoordinates
+import ru.phrogs.moretechhackathon.presentation.uistate.map.RouteInfo
 
 private var previousLocationPoint: PlacemarkMapObject? = null
 private var previousRoute: PolylineMapObject? = null
@@ -33,7 +34,7 @@ fun MapView(
     forceMapRedraw: Boolean,
     cameraPositionState: CameraPosition?,
     cameraListener: CameraListener,
-    route: Polyline?
+    route: RouteInfo?
 ) {
     AndroidView(
         factory = {
@@ -80,7 +81,7 @@ private fun updateMapView(
     geoLocationImageProvider: ImageProvider,
     cameraPositionState: CameraPosition?,
     cameraListener: CameraListener,
-    route: Polyline?
+    route: RouteInfo?
 ) = { mapView: MapView ->
     mapView.mapWindow.map.removeCameraListener(cameraListener)
     mapView.mapWindow.map.addCameraListener(cameraListener)
@@ -118,7 +119,7 @@ private fun redrawAllObjects(
     minZoom: Int,
     locationPoint: Point?,
     geoLocationImageProvider: ImageProvider,
-    route: Polyline?,
+    route: RouteInfo?,
     forceMapRedraw: Boolean
 ) {
     mapView.mapWindow.map.mapObjects.clear()
@@ -139,14 +140,14 @@ private fun redrawAllObjects(
         }
     }
     if (route != null) {
-        previousRoute = mapView.mapWindow.map.mapObjects.addPolyline(route)
+        previousRoute = mapView.mapWindow.map.mapObjects.addPolyline(route.geometry)
     }
 
     prevForceRedrawValue = forceMapRedraw
 }
 
 private fun updateRouteAndLocation(
-    route: Polyline?,
+    route: RouteInfo?,
     mapView: MapView,
     locationPoint: Point?,
     geoLocationImageProvider: ImageProvider,
@@ -155,7 +156,7 @@ private fun updateRouteAndLocation(
     if (route != null) {
         var routesMatch = false
         try {
-            routesMatch = polyLinesMatch(previousRoute?.geometry, route)
+            routesMatch = polyLinesMatch(previousRoute?.geometry, route.geometry)
         } catch (_: Exception) {
 
         }
@@ -168,8 +169,18 @@ private fun updateRouteAndLocation(
                     }
                 }
             }
-            previousRoute = mapView.mapWindow.map.mapObjects.addPolyline(route)
+            previousRoute = mapView.mapWindow.map.mapObjects.addPolyline(route.geometry)
         }
+    } else if (previousRoute != null) {
+        previousRoute?.let {
+            if (it.isValid) {
+                try {
+                    mapView.mapWindow.map.mapObjects.remove(it)
+                } catch (_: Exception) {
+                }
+            }
+        }
+        previousRoute = null
     }
     if (locationPoint != null) {
         previousLocationPoint?.let {

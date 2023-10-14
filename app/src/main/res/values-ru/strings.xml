@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="chat">Чат</string>
+    <string name="route">Маршрут</string>
+    <string name="drive">Доехать</string>
+    <string name="where">Куда: %1$s</string>
+    <string name="route_time">Время в дороге: ~%1$d минут</string>
 </resources>

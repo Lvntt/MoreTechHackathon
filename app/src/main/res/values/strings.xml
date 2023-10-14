@@ -1,18 +1,22 @@
 <resources>
-    <string name="km_away">км от вас</string>
-    <string name="bank_office">Отделение</string>
-    <string name="individuals">Физлица</string>
-    <string name="entities">Юрлица</string>
-    <string name="load_now">Сейчас загруженность: </string>
-    <string name="low">низкая</string>
-    <string name="medium">средняя</string>
-    <string name="high">высокая</string>
-    <string name="today_working_until">Сегодня работает до</string>
-    <string name="day_off">выходной</string>
-    <string name="day_off_today">Сегодня выходной</string>
-    <string name="accessible_limited_mobility">Подходит маломобильным</string>
-    <string name="accessible_limited_mobility_desc">Есть пандус и вызов сотрудника</string>
-    <string name="make_a_route">Проложить маршрут</string>
+    <string name="km_away" translatable="false">км от вас</string>
+    <string name="bank_office" translatable="false">Отделение</string>
+    <string name="individuals" translatable="false">Физлица</string>
+    <string name="entities" translatable="false">Юрлица</string>
+    <string name="load_now" translatable="false">Сейчас загруженность: </string>
+    <string name="low" translatable="false">низкая</string>
+    <string name="medium" translatable="false">средняя</string>
+    <string name="high" translatable="false">высокая</string>
+    <string name="today_working_until" translatable="false">Сегодня работает до</string>
+    <string name="day_off" translatable="false">выходной</string>
+    <string name="day_off_today" translatable="false">Сегодня выходной</string>
+    <string name="accessible_limited_mobility" translatable="false">Подходит маломобильным</string>
+    <string name="accessible_limited_mobility_desc" translatable="false">Есть пандус и вызов сотрудника</string>
+    <string name="make_a_route" translatable="false">Проложить маршрут</string>
     <string name="app_name" translatable="false">MoreTechHackathon</string>
     <string name="chat">Chat</string>
+    <string name="route">Route</string>
+    <string name="drive">Drive</string>
+    <string name="where">Where: %1$s</string>
+    <string name="route_time">Time on the road: ~%1$d mins</string>
 </resources>
