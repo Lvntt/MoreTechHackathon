@@ -30,42 +30,42 @@ val Text = TextStyle(
 
 val LabelAccentSemiBold = TextStyle(
     fontFamily = VTBGroupUI,
-    fontSize = 13.sp,
+    fontSize = 16.sp,
     fontWeight = FontWeight.SemiBold
 )
 
 val LabelAccent = TextStyle(
     fontFamily = VTBGroupUI,
-    fontSize = 13.sp,
+    fontSize = 16.sp,
     fontWeight = FontWeight.Medium
 )
 
 val LabelRegular = TextStyle(
     fontFamily = VTBGroupUI,
-    fontSize = 13.sp,
+    fontSize = 16.sp,
     fontWeight = FontWeight.Normal
 )
 
 val OnButtonTextStyle = TextStyle(
     fontFamily = VTBGroupUI,
-    fontSize = 20.sp,
+    fontSize = 23.sp,
     fontWeight = FontWeight.Medium
 )
 
 val OnSmallButtonTextStyle = TextStyle(
     fontFamily = VTBGroupUI,
-    fontSize = 14.sp,
+    fontSize = 17.sp,
     fontWeight = FontWeight.Normal
 )
 
 val TopBarTextStyle = TextStyle(
     fontFamily = VTBGroupUI,
-    fontSize = 22.sp,
+    fontSize = 25.sp,
     fontWeight = FontWeight.Medium
 )
 
 val AdditionalText = TextStyle(
     fontFamily = VTBGroupUI,
-    fontSize = 11.sp,
+    fontSize = 14.sp,
     fontWeight = FontWeight.Normal
 )

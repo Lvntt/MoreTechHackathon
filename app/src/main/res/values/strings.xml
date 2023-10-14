@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">MoreTechHackathon</string>
+    <string name="km_away">км от вас</string>
+    <string name="bank_office">Отделение</string>
+    <string name="individuals">Физлица</string>
+    <string name="entities">Юрлица</string>
+    <string name="load_now">Сейчас загруженность: </string>
+    <string name="low">низкая</string>
+    <string name="medium">средняя</string>
+    <string name="high">высокая</string>
+    <string name="today_working_until">Сегодня работает до</string>
+    <string name="day_off">выходной</string>
+    <string name="day_off_today">Сегодня выходной</string>
+    <string name="accessible_limited_mobility">Подходит маломобильным</string>
+    <string name="accessible_limited_mobility_desc">Есть пандус и вызов сотрудника</string>
+    <string name="make_a_route">Проложить маршрут</string>
 </resources>

@@ -1,5 +1,6 @@
 package ru.phrogs.moretechhackathon.presentation.ui.navigation
 
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,7 +14,7 @@ object MoreTechDestinations {
     const val CHAT = "chat"
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun MoreTechNavigation(
     navController: NavHostController
 ) {

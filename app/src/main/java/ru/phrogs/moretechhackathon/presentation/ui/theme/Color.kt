@@ -16,3 +16,8 @@ val NavigationButtonBorderColor = Color(0xFF002882)
 val UserMessageColor = Color.White
 val SystemMessageColor = Color.Black
 val Transparent = Color(0x00000000)
+
+val DarkBlue = Color(0xFF002882)
+val Blue = Color(0xFF33539B)
+val LightBlue = Color(0xFF33539B)
+val WhiteBlue = Color(0xFFF4FBFF)
