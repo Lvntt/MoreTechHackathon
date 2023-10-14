@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.yandex.mapkit.MapKitFactory
-import ru.phrogs.moretechhackathon.presentation.ui.screen.map.MapScreen
+import ru.phrogs.moretechhackathon.presentation.ui.navigation.MoreTechNavigation
 import ru.phrogs.moretechhackathon.presentation.ui.theme.MoreTechHackathonTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,15 +18,14 @@ class MainActivity : ComponentActivity() {
 
         MapKitFactory.initialize(this)
 
-
         setContent {
+            val navController = rememberNavController()
             MoreTechHackathonTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    MapScreen(context = this)
-                    //ChatScreen()
+                    MoreTechNavigation(navController = navController, context = this)
                 }
             }
         }
