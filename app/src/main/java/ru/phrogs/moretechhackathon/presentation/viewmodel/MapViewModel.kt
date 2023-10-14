@@ -16,6 +16,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,16 +35,24 @@ class MapViewModel(
         get() = _currentLocationState
     private val _currentLocationState = mutableStateOf<Point?>(null)
 
+    var lastSavedCameraPosition = CameraPosition(
+        Point(55.751225, 37.629540),
+        10.0f,
+        150.0f,
+        0f
+    )
+    var forceRedraw = mutableStateOf(false)
+
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
-            for (location in p0.locations) {
-                _currentLocationState.value = Point(location.latitude, location.longitude)
-            }
+            lastLocationResult = p0
+            updateLocation()
         }
     }
     private val locationRequest =
         LocationRequest.Builder(5000).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build()
+    private lateinit var lastLocationResult: LocationResult
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     init {
@@ -64,6 +73,16 @@ class MapViewModel(
                 }
             }
         }
+    }
+
+    private fun updateLocation() {
+        for (location in lastLocationResult.locations) {
+            _currentLocationState.value = Point(location.latitude, location.longitude)
+        }
+    }
+
+    fun forceUpdateLocation() {
+        updateLocation()
     }
 
     fun startLocationTracking(context: Context) {

@@ -3,6 +3,8 @@ package ru.phrogs.moretechhackathon.presentation.ui.screen.map.components
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraListener
+import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.ClusterListener
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.MapObjectTapListener
@@ -24,7 +26,9 @@ fun MapView(
     clusterRadius: Double = 60.0,
     minZoom: Int = 13,
     placeMarkTapListener: MapObjectTapListener,
-    forceMapRedraw: Boolean
+    forceMapRedraw: Boolean,
+    cameraPositionState: CameraPosition?,
+    cameraListener: CameraListener
 ) {
     AndroidView(factory = {
         val mapView = MapView(it)
@@ -49,7 +53,9 @@ fun MapView(
         clusterRadius,
         minZoom,
         locationPoint,
-        geoLocationImageProvider
+        geoLocationImageProvider,
+        cameraPositionState,
+        cameraListener
     )
     )
 }
@@ -64,8 +70,15 @@ private fun updateMapView(
     clusterRadius: Double,
     minZoom: Int,
     locationPoint: Point?,
-    geoLocationImageProvider: ImageProvider
+    geoLocationImageProvider: ImageProvider,
+    cameraPositionState: CameraPosition?,
+    cameraListener: CameraListener
 ) = { mapView: MapView ->
+    mapView.mapWindow.map.removeCameraListener(cameraListener)
+    mapView.mapWindow.map.addCameraListener(cameraListener)
+    if (cameraPositionState != null) {
+        mapView.mapWindow.map.move(cameraPositionState)
+    }
     if (forceMapRedraw != prevForceRedrawValue) {
         mapView.mapWindow.map.mapObjects.clear()
         clusterizeMapPoints(
@@ -84,6 +97,7 @@ private fun updateMapView(
                 setIcon(geoLocationImageProvider, iconStyle)
             }
         }
+
         prevForceRedrawValue = forceMapRedraw
     } else {
         if (locationPoint != null) {
