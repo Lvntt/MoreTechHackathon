@@ -1,4 +1,4 @@
-package ru.phrogs.moretechhackathon.presentation
+package ru.phrogs.moretechhackathon.presentation.ui.screen.map.components
 
 import android.content.Context
 import android.widget.LinearLayout
