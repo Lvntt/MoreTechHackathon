@@ -38,6 +38,7 @@ import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.ChatViewModel
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.components.ChatMessages
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.MessageType
 import ru.phrogs.moretechhackathon.presentation.ui.theme.SystemBackgroundColor
+import ru.phrogs.moretechhackathon.presentation.ui.theme.VTBGroupUI
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,7 +100,7 @@ fun ChatScreen() {
                 onValueChange = { message.value = it },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
-                    Text(text = "Сообщение")
+                    Text(text = "Сообщение", style = ru.phrogs.moretechhackathon.presentation.ui.theme.Text)
                 },
                 trailingIcon = {
                     IconButton(

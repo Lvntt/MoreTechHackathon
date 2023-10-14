@@ -18,14 +18,12 @@ class ChatViewModel(
     val state: State<ChatState> = _state
 
     init {
-        addMessages(listOf(FIRST_SYSTEM_MESSAGE, SECOND_SYSTEM_MESSAGE), MessageType.SYSTEM_MESSAGE)
+        addMessages(listOf(FIRST_SYSTEM_MESSAGE), MessageType.SYSTEM_MESSAGE)
     }
 
     private companion object {
         const val FIRST_SYSTEM_MESSAGE =
             "В этом чате вы можете указать интересующую услугу по ключевым словам, и мы подберем для вас наиболее подходящие отделения ВТБ. Например: кредит."
-        const val SECOND_SYSTEM_MESSAGE =
-            "Вы также можете перейти на экран выбора услуг и конкретизировать цель визита в отделение."
     }
 
     private fun addMessages(messages: List<String>, type: MessageType) {
