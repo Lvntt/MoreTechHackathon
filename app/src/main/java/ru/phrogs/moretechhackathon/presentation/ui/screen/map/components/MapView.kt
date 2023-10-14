@@ -13,6 +13,7 @@ import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.map.PolylineMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
+import ru.phrogs.moretechhackathon.domain.entity.BankCoordinates
 
 private var previousLocationPoint: PlacemarkMapObject? = null
 private var previousRoute: PolylineMapObject? = null
@@ -20,7 +21,7 @@ private var prevForceRedrawValue: Boolean = false
 
 @Composable
 fun MapView(
-    placeMarks: List<Point>,
+    placeMarks: List<BankCoordinates>,
     locationPoint: Point?,
     placeMarkImageProvider: ImageProvider,
     geoLocationImageProvider: ImageProvider,
@@ -69,7 +70,7 @@ fun MapView(
 private fun updateMapView(
     forceMapRedraw: Boolean,
     clusterListener: ClusterListener,
-    placeMarks: List<Point>,
+    placeMarks: List<BankCoordinates>,
     placeMarkImageProvider: ImageProvider,
     iconStyle: IconStyle,
     placeMarkTapListener: MapObjectTapListener,
@@ -109,7 +110,7 @@ private fun updateMapView(
 private fun redrawAllObjects(
     mapView: MapView,
     clusterListener: ClusterListener,
-    placeMarks: List<Point>,
+    placeMarks: List<BankCoordinates>,
     placeMarkImageProvider: ImageProvider,
     iconStyle: IconStyle,
     placeMarkTapListener: MapObjectTapListener,
@@ -189,7 +190,7 @@ private fun updateRouteAndLocation(
 private fun clusterizeMapPoints(
     mapView: MapView,
     clusterListener: ClusterListener,
-    placeMarks: List<Point>,
+    placeMarks: List<BankCoordinates>,
     placeMarkImageProvider: ImageProvider,
     iconStyle: IconStyle,
     placeMarkTapListener: MapObjectTapListener,
@@ -201,8 +202,9 @@ private fun clusterizeMapPoints(
 
     placeMarks.forEach { point ->
         val placeMark = clusterizedCollection.addPlacemark().apply {
-            geometry = point
+            geometry = Point(point.latitude, point.longitude)
             setIcon(placeMarkImageProvider, iconStyle)
+            userData = point.bankId
         }
         placeMark.addTapListener(placeMarkTapListener)
     }

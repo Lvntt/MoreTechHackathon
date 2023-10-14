@@ -7,7 +7,7 @@ import ru.phrogs.moretechhackathon.presentation.viewmodel.MapViewModel
 fun providePresentationModule() = module {
 
     viewModel {
-        MapViewModel(get())
+        MapViewModel(get(), get())
     }
 
 }

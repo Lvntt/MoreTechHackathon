@@ -30,15 +30,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.phrogs.moretechhackathon.domain.usecase.GetAllBankCoordinatesUseCase
+import ru.phrogs.moretechhackathon.domain.usecase.GetBankInfoUseCase
+import ru.phrogs.moretechhackathon.presentation.uistate.map.BankInfoState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
 class MapViewModel(
-    private val getAllBankCoordinatesUseCase: GetAllBankCoordinatesUseCase
+    private val getAllBankCoordinatesUseCase: GetAllBankCoordinatesUseCase,
+    private val getBankInfoUseCase: GetBankInfoUseCase
 ) : ViewModel() {
 
     val mapState: State<MapState>
         get() = _mapState
     private val _mapState = mutableStateOf<MapState>(MapState.Loading)
+
+    val bankInfoState: State<BankInfoState>
+        get() = _bankInfoState
+    private val _bankInfoState = mutableStateOf<BankInfoState>(BankInfoState.Loading)
 
     val currentLocationState: State<Point?>
         get() = _currentLocationState
@@ -57,10 +67,7 @@ class MapViewModel(
 
 
     var lastSavedCameraPosition = CameraPosition(
-        Point(55.751225, 37.629540),
-        10.0f,
-        150.0f,
-        0f
+        Point(55.751225, 37.629540), 10.0f, 150.0f, 0f
     )
     var forceRedraw = mutableStateOf(false)
 
@@ -110,6 +117,31 @@ class MapViewModel(
         updateLocation()
     }
 
+    fun loadBankData(bankId: Int) {
+        if (bankInfoState.value is BankInfoState.Content && (bankInfoState.value as BankInfoState.Content).bankId == bankId) {
+            return
+        }
+        _bankInfoState.value = BankInfoState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val bankInfo = getBankInfoUseCase(bankId)
+                var distance = 0.0
+                _currentLocationState.value?.let {
+                    distance = kmDistanceBetweenTwoPoints(
+                        it, Point(bankInfo.latitude.toDouble(), bankInfo.longitude.toDouble())
+                    )
+                }
+                withContext(Dispatchers.Main) {
+                    _bankInfoState.value = BankInfoState.Content(bankId, bankInfo, distance)
+                }
+            } catch (_: Exception) {
+                withContext(Dispatchers.Main) {
+                    _bankInfoState.value = BankInfoState.Error
+                }
+            }
+        }
+    }
+
     fun startLocationTracking(context: Context) {
         if (!this::fusedLocationClient.isInitialized) {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -146,10 +178,19 @@ class MapViewModel(
             add(RequestPoint(destination, RequestPointType.WAYPOINT, null, null))
         }
         drivingRouter.requestRoutes(
-            points,
-            drivingOptions,
-            vehicleOptions,
-            drivingRouteListener
+            points, drivingOptions, vehicleOptions, drivingRouteListener
         )
+    }
+
+    fun kmDistanceBetweenTwoPoints(first: Point, second: Point): Double {
+        return acos(
+            (sin(Math.toRadians(first.latitude)) * sin(Math.toRadians(second.latitude))) + (cos(
+                Math.toRadians(first.latitude)
+            ) * cos(Math.toRadians(second.latitude))) * (cos(
+                Math.toRadians(second.longitude) - Math.toRadians(
+                    first.longitude
+                )
+            ))
+        ) * 6371
     }
 }

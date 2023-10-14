@@ -6,17 +6,22 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,19 +45,23 @@ import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.ui_view.ViewProvider
 import org.koin.androidx.compose.koinViewModel
 import ru.phrogs.moretechhackathon.R
+import ru.phrogs.moretechhackathon.domain.entity.LoadType
 import ru.phrogs.moretechhackathon.presentation.ui.common.lifecycle.observeAsState
 import ru.phrogs.moretechhackathon.presentation.ui.common.state.LoadingProgress
 import ru.phrogs.moretechhackathon.presentation.ui.navigation.MoreTechDestinations
+import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.BankOfficeDetails
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.ClusterView
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.MapView
 import ru.phrogs.moretechhackathon.presentation.ui.theme.BANK_ICON_SCALE
 import ru.phrogs.moretechhackathon.presentation.ui.theme.PaddingMedium
+import ru.phrogs.moretechhackathon.presentation.ui.theme.WhiteBlue
+import ru.phrogs.moretechhackathon.presentation.uistate.map.BankInfoState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
 import ru.phrogs.moretechhackathon.presentation.viewmodel.MapViewModel
 
 private val iconStyle = IconStyle().setScale(BANK_ICON_SCALE)
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(context: Context, navController: NavController) {
     val bankImageProvider = ImageProvider.fromResource(context, R.drawable.placemark)
@@ -65,11 +74,17 @@ fun MapScreen(context: Context, navController: NavController) {
 
     val mapViewModel: MapViewModel = koinViewModel()
     val mapState by remember { mapViewModel.mapState }
+    val bankInfoState by remember { mapViewModel.bankInfoState }
     val locationState by remember { mapViewModel.currentLocationState }
-    val placeMarkTapListener = MapObjectTapListener { _, point ->
-        if (locationState != null) {
-            mapViewModel.buildRoute(locationState!!, point)
-        }
+    var shouldShowBankInfoBottomSheet by remember { mutableStateOf(false) }
+    val bankInfoSheetState = rememberModalBottomSheetState()
+    val placeMarkTapListener = MapObjectTapListener { mapObject, _ ->
+//        if (locationState != null) {
+//            mapViewModel.buildRoute(locationState!!, point)
+//        }
+        val bankId = mapObject.userData as Int
+        mapViewModel.loadBankData(bankId)
+        shouldShowBankInfoBottomSheet = true
         true
     }
     val route by remember { mapViewModel.routeState }
@@ -110,6 +125,33 @@ fun MapScreen(context: Context, navController: NavController) {
         }
     }
 
+    if (shouldShowBankInfoBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { shouldShowBankInfoBottomSheet = false },
+            sheetState = bankInfoSheetState,
+            containerColor = WhiteBlue,
+            windowInsets = WindowInsets(0,0,0,0)
+        ) {
+            Crossfade(targetState = bankInfoState, label = "") { state ->
+                when(state) {
+                    is BankInfoState.Content -> BankOfficeDetails(
+                        distanceFromClient = state.distance,
+                        address = state.bankInfo.address,
+                        individualsLoad = LoadType.LOW,
+                        entitiesLoad = LoadType.LOW,
+                        openHours = state.bankInfo.openHours,
+                        openHoursIndividual = state.bankInfo.openHoursIndividual,
+                        todayOpenHours = state.bankInfo.openHours.openHours.first(),
+                        availableForBlind = state.bankInfo.hasRamp,
+                        metroStation = listOf(state.bankInfo.metroStation!!)
+                    )
+                    BankInfoState.Error -> Unit
+                    BankInfoState.Loading -> LoadingProgress(0.5f)
+                }
+            }
+        }
+    }
+
     val lifeCycleState by LocalLifecycleOwner.current.lifecycle.observeAsState()
 
     LaunchedEffect(lifeCycleState) {
@@ -147,11 +189,7 @@ private fun MapContent(
     route: Polyline?,
     placeMarkTapListener: MapObjectTapListener
 ) {
-    val points = state.bankCoordinates.map { bankCoordinates ->
-        Point(
-            bankCoordinates.latitude, bankCoordinates.longitude
-        )
-    }
+    val points = state.bankCoordinates
 
     MapView(
         placeMarks = points,
