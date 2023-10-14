@@ -15,7 +15,17 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.yandex.mapkit.RequestPoint
+import com.yandex.mapkit.RequestPointType
+import com.yandex.mapkit.directions.DirectionsFactory
+import com.yandex.mapkit.directions.driving.DrivingOptions
+import com.yandex.mapkit.directions.driving.DrivingRoute
+import com.yandex.mapkit.directions.driving.DrivingSession.DrivingRouteListener
+import com.yandex.mapkit.directions.driving.VehicleOptions
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.geometry.Polyline
+import com.yandex.mapkit.map.CameraPosition
+import com.yandex.runtime.Error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,18 +43,42 @@ class MapViewModel(
     val currentLocationState: State<Point?>
         get() = _currentLocationState
     private val _currentLocationState = mutableStateOf<Point?>(null)
-
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
-            for (location in p0.locations) {
-                _currentLocationState.value = Point(location.latitude, location.longitude)
-            }
+            lastLocationResult = p0
+            updateLocation()
         }
     }
     private val locationRequest =
         LocationRequest.Builder(5000).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build()
+    private lateinit var lastLocationResult: LocationResult
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+
+    var lastSavedCameraPosition = CameraPosition(
+        Point(55.751225, 37.629540),
+        10.0f,
+        150.0f,
+        0f
+    )
+    var forceRedraw = mutableStateOf(false)
+
+    val routeState: State<Polyline?>
+        get() = _routeState
+    private val _routeState = mutableStateOf<Polyline?>(null)
+    val routeFinishTimeState: State<Double?>
+        get() = _routeFinishTimeState
+    private val _routeFinishTimeState = mutableStateOf<Double?>(null)
+    private val drivingRouteListener = object : DrivingRouteListener {
+        override fun onDrivingRoutes(p0: MutableList<DrivingRoute>) {
+            val route = p0.first()
+            _routeState.value = route.geometry
+            route.routePosition.timeToFinish()
+        }
+
+        override fun onDrivingRoutesError(p0: Error) {}
+    }
 
     init {
         loadBankCoordinates()
@@ -64,6 +98,16 @@ class MapViewModel(
                 }
             }
         }
+    }
+
+    private fun updateLocation() {
+        for (location in lastLocationResult.locations) {
+            _currentLocationState.value = Point(location.latitude, location.longitude)
+        }
+    }
+
+    fun forceUpdateLocation() {
+        updateLocation()
     }
 
     fun startLocationTracking(context: Context) {
@@ -88,5 +132,24 @@ class MapViewModel(
     fun stopLocationTracking() {
         if (!this::fusedLocationClient.isInitialized) return
         fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    fun buildRoute(start: Point, destination: Point) {
+        val drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
+        val drivingOptions = DrivingOptions().apply {
+            routesCount = 1
+            departureTime = System.currentTimeMillis()
+        }
+        val vehicleOptions = VehicleOptions()
+        val points = buildList {
+            add(RequestPoint(start, RequestPointType.WAYPOINT, null, null))
+            add(RequestPoint(destination, RequestPointType.WAYPOINT, null, null))
+        }
+        drivingRouter.requestRoutes(
+            points,
+            drivingOptions,
+            vehicleOptions,
+            drivingRouteListener
+        )
     }
 }

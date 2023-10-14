@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -31,6 +30,9 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.geometry.Polyline
+import com.yandex.mapkit.map.CameraListener
+import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.ClusterListener
 import com.yandex.mapkit.map.IconStyle
 import com.yandex.mapkit.map.MapObjectTapListener
@@ -48,9 +50,6 @@ import ru.phrogs.moretechhackathon.presentation.ui.theme.PaddingMedium
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
 import ru.phrogs.moretechhackathon.presentation.viewmodel.MapViewModel
 
-private val placeMarkTapListener = MapObjectTapListener { _, _ ->
-    true
-}
 private val iconStyle = IconStyle().setScale(BANK_ICON_SCALE)
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -63,16 +62,25 @@ fun MapScreen(context: Context, navController: NavController) {
             setData(cluster.placemarks.size)
         }))
     }
-    var forceMapRedraw by remember { mutableStateOf(false) }
 
     val mapViewModel: MapViewModel = koinViewModel()
     val mapState by remember { mapViewModel.mapState }
     val locationState by remember { mapViewModel.currentLocationState }
+    val placeMarkTapListener = MapObjectTapListener { _, point ->
+        if (locationState != null) {
+            mapViewModel.buildRoute(locationState!!, point)
+        }
+        true
+    }
+    val route by remember { mapViewModel.routeState }
+    val mapCameraListener =
+        CameraListener { _, p1, _, _ -> mapViewModel.lastSavedCameraPosition = p1 }
+
+    var forceMapRedraw by remember { mapViewModel.forceRedraw }
 
     val locationPermissionsState = rememberMultiplePermissionsState(
         permissions = listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
         )
     )
 
@@ -88,7 +96,13 @@ fun MapScreen(context: Context, navController: NavController) {
                     clusterListener,
                     locationPermissionsState,
                     navController,
-                    forceMapRedraw
+                    forceMapRedraw,
+                    mapViewModel::lastSavedCameraPosition::set,
+                    mapViewModel.lastSavedCameraPosition,
+                    mapCameraListener,
+                    mapViewModel::forceUpdateLocation,
+                    route,
+                    placeMarkTapListener
                 )
             }
 
@@ -100,7 +114,9 @@ fun MapScreen(context: Context, navController: NavController) {
 
     LaunchedEffect(lifeCycleState) {
         when (lifeCycleState) {
-            Lifecycle.Event.ON_PAUSE -> mapViewModel.stopLocationTracking()
+            Lifecycle.Event.ON_PAUSE -> {
+                mapViewModel.stopLocationTracking()
+            }
 
             Lifecycle.Event.ON_RESUME -> if (locationPermissionsState.allPermissionsGranted) {
                 mapViewModel.startLocationTracking(context)
@@ -123,7 +139,13 @@ private fun MapContent(
     clusterListener: ClusterListener,
     locationPermissionsState: MultiplePermissionsState,
     navController: NavController,
-    forceMapRedraw: Boolean
+    forceMapRedraw: Boolean,
+    lastCameraPosSetter: (CameraPosition) -> Unit,
+    lastCameraPosition: CameraPosition?,
+    cameraMapListener: CameraListener,
+    forceUpdateLocation: () -> Unit,
+    route: Polyline?,
+    placeMarkTapListener: MapObjectTapListener
 ) {
     val points = state.bankCoordinates.map { bankCoordinates ->
         Point(
@@ -133,13 +155,16 @@ private fun MapContent(
 
     MapView(
         placeMarks = points,
+        locationPoint = locationState,
         placeMarkImageProvider = bankImageProvider,
         geoLocationImageProvider = geoLocationImageProvider,
         iconStyle = iconStyle,
         clusterListener = clusterListener,
         placeMarkTapListener = placeMarkTapListener,
-        locationPoint = locationState,
-        forceMapRedraw = forceMapRedraw
+        forceMapRedraw = forceMapRedraw,
+        cameraPositionState = lastCameraPosition,
+        cameraListener = cameraMapListener,
+        route = route
     )
     Box(
         modifier = Modifier
@@ -153,7 +178,14 @@ private fun MapContent(
                 if (!locationPermissionsState.allPermissionsGranted) {
                     locationPermissionsState.launchMultiplePermissionRequest()
                 } else {
-                    //Move to position
+                    if (locationState != null) {
+                        lastCameraPosSetter(
+                            CameraPosition(
+                                locationState, 13f, 150f, 0f
+                            )
+                        )
+                        forceUpdateLocation()
+                    }
                 }
             }) {
                 Icon(

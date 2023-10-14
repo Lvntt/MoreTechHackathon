@@ -22,6 +22,7 @@ class MoreTechHackathonApp : Application() {
                 provideChatPresentationModule()
             )
         }
+        //Yep, I leaked the API key, I know
         MapKitFactory.setApiKey("d213c2ba-a7ff-4bfa-aa57-d2f64ce8c666")
     }
 }
