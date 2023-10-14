@@ -1,4 +1,4 @@
-package ru.phrogs.moretechhackathon.ui.theme
+package ru.phrogs.moretechhackathon.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -57,8 +57,10 @@ fun MoreTechHackathonTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            window.statusBarColor = Transparent.toArgb()
+            window.navigationBarColor = Transparent.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.setDecorFitsSystemWindows(window, false)
         }
     }
 

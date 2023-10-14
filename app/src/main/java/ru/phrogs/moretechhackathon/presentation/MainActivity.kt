@@ -1,4 +1,4 @@
-package ru.phrogs.moretechhackathon
+package ru.phrogs.moretechhackathon.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,15 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import ru.phrogs.moretechhackathon.ui.theme.MoreTechHackathonTheme
+import androidx.compose.ui.viewinterop.AndroidView
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.mapview.MapView
+import ru.phrogs.moretechhackathon.presentation.ui.theme.MoreTechHackathonTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        MapKitFactory.initialize(this)
         setContent {
             MoreTechHackathonTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,25 +25,26 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    MapView()
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MoreTechHackathonTheme {
-        Greeting("Android")
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
     }
+
+    override fun onStop() {
+        super.onStop()
+        MapKitFactory.getInstance().onStop()
+    }
+}
+
+@Composable
+fun MapView() {
+    AndroidView(factory = {
+        return@AndroidView MapView(it)
+    })
 }
