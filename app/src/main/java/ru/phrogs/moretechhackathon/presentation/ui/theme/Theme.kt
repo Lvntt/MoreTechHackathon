@@ -60,7 +60,6 @@ fun MoreTechHackathonTheme(
             window.statusBarColor = Transparent.toArgb()
             window.navigationBarColor = Transparent.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-            WindowCompat.setDecorFitsSystemWindows(window, false)
         }
     }
 

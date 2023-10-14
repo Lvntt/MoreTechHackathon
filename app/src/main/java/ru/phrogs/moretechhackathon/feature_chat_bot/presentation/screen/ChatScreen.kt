@@ -1,5 +1,6 @@
 package ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,33 +22,41 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
+import org.koin.androidx.compose.koinViewModel
 import ru.phrogs.moretechhackathon.R
+import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.ChatViewModel
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.components.ChatMessages
-import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.ChatState
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.MessageType
 import ru.phrogs.moretechhackathon.presentation.ui.theme.SystemBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatScreen(
-    state: ChatState,
-    onSendMessage: (String) -> Unit,
-    onDisconnect: () -> Unit,
-) {
+fun ChatScreen() {
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            WindowCompat.setDecorFitsSystemWindows(window, true)
+        }
+    }
+    val viewModel: ChatViewModel = koinViewModel()
     val message = rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        IconButton(onClick = onDisconnect, modifier = Modifier.align(Alignment.Start)) {
+        IconButton(onClick = viewModel::backFromChat, modifier = Modifier.align(Alignment.Start)) {
             Icon(
                 painter = painterResource(id = R.drawable.keyboard_backspace),
                 contentDescription = null,
@@ -64,7 +73,7 @@ fun ChatScreen(
             contentPadding = PaddingValues(16.dp),
             reverseLayout = true
         ) {
-            items(state.messages) { message ->
+            items(viewModel.state.value.messages) { message ->
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
@@ -95,7 +104,7 @@ fun ChatScreen(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            onSendMessage(message.value)
+                            viewModel.sendMessage(message.value)
                             message.value = ""
                         },
                         enabled = message.value.isNotBlank()
