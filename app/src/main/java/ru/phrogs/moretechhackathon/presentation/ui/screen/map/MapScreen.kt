@@ -30,6 +30,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.ClusterListener
@@ -49,9 +50,6 @@ import ru.phrogs.moretechhackathon.presentation.ui.theme.PaddingMedium
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
 import ru.phrogs.moretechhackathon.presentation.viewmodel.MapViewModel
 
-private val placeMarkTapListener = MapObjectTapListener { _, _ ->
-    true
-}
 private val iconStyle = IconStyle().setScale(BANK_ICON_SCALE)
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -68,6 +66,13 @@ fun MapScreen(context: Context, navController: NavController) {
     val mapViewModel: MapViewModel = koinViewModel()
     val mapState by remember { mapViewModel.mapState }
     val locationState by remember { mapViewModel.currentLocationState }
+    val placeMarkTapListener = MapObjectTapListener { _, point ->
+        if (locationState != null) {
+            mapViewModel.buildRoute(locationState!!, point)
+        }
+        true
+    }
+    val route by remember { mapViewModel.routeState }
     val mapCameraListener =
         CameraListener { _, p1, _, _ -> mapViewModel.lastSavedCameraPosition = p1 }
 
@@ -95,7 +100,9 @@ fun MapScreen(context: Context, navController: NavController) {
                     mapViewModel::lastSavedCameraPosition::set,
                     mapViewModel.lastSavedCameraPosition,
                     mapCameraListener,
-                    mapViewModel::forceUpdateLocation
+                    mapViewModel::forceUpdateLocation,
+                    route,
+                    placeMarkTapListener
                 )
             }
 
@@ -136,7 +143,9 @@ private fun MapContent(
     lastCameraPosSetter: (CameraPosition) -> Unit,
     lastCameraPosition: CameraPosition?,
     cameraMapListener: CameraListener,
-    forceUpdateLocation: () -> Unit
+    forceUpdateLocation: () -> Unit,
+    route: Polyline?,
+    placeMarkTapListener: MapObjectTapListener
 ) {
     val points = state.bankCoordinates.map { bankCoordinates ->
         Point(
@@ -154,7 +163,8 @@ private fun MapContent(
         placeMarkTapListener = placeMarkTapListener,
         forceMapRedraw = forceMapRedraw,
         cameraPositionState = lastCameraPosition,
-        cameraListener = cameraMapListener
+        cameraListener = cameraMapListener,
+        route = route
     )
     Box(
         modifier = Modifier
