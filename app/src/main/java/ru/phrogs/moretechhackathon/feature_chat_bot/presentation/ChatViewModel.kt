@@ -6,14 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
-import ru.phrogs.moretechhackathon.feature_chat_bot.data.repository.ChatBotRepositoryImpl
 import ru.phrogs.moretechhackathon.feature_chat_bot.domain.usecase.GetServicesUseCase
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.ChatState
-import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.Messages
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.MessageType
+import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.Messages
 
 class ChatViewModel(
-//    private val getServicesUseCase: GetServicesUseCase
+    private val getServicesUseCase: GetServicesUseCase
 ) : ViewModel() {
     private val _state = mutableStateOf(ChatState())
     val state: State<ChatState> = _state
@@ -39,8 +38,6 @@ class ChatViewModel(
 
         val nonEmptyLines = message.lines().filter { it.isNotBlank() }
         val resultString = nonEmptyLines.joinToString("\n")
-
-        val getServicesUseCase = GetServicesUseCase(ChatBotRepositoryImpl())
 
         addMessages(listOf(resultString), MessageType.USER_MESSAGE)
 
