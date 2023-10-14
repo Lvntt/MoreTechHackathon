@@ -1,8 +1,12 @@
 package ru.phrogs.moretechhackathon.presentation.ui.navigation
 
+import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.ChatScreen
+import ru.phrogs.moretechhackathon.presentation.ui.screen.map.MapScreen
 
 object MoreTechDestinations {
     const val ONBOARDING = "onboarding"
@@ -13,13 +17,12 @@ object MoreTechDestinations {
     const val CHAT = "chat"
 }
 
-@androidx.compose.runtime.Composable
+@Composable
 fun MoreTechNavigation(
-    navController: NavHostController
+    navController: NavHostController, context: Context
 ) {
     NavHost(
-        navController = navController,
-        startDestination = MoreTechDestinations.ONBOARDING
+        navController = navController, startDestination = MoreTechDestinations.MAIN
     ) {
         composable(MoreTechDestinations.ONBOARDING) {
             // TODO
@@ -31,13 +34,13 @@ fun MoreTechNavigation(
             // TODO
         }
         composable(MoreTechDestinations.MAIN) {
-            // TODO
+            MapScreen(context = context, navController = navController)
         }
         composable(MoreTechDestinations.SEARCH_HISTORY) {
             // TODO
         }
         composable(MoreTechDestinations.CHAT) {
-            // TODO
+            ChatScreen()
         }
     }
 }
