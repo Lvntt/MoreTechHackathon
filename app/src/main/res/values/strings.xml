@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MoreTechHackathon</string>
     <string name="km_away">км от вас</string>
     <string name="bank_office">Отделение</string>
     <string name="individuals">Физлица</string>
@@ -14,4 +13,6 @@
     <string name="accessible_limited_mobility">Подходит маломобильным</string>
     <string name="accessible_limited_mobility_desc">Есть пандус и вызов сотрудника</string>
     <string name="make_a_route">Проложить маршрут</string>
+    <string name="app_name" translatable="false">MoreTechHackathon</string>
+    <string name="chat">Chat</string>
 </resources>
