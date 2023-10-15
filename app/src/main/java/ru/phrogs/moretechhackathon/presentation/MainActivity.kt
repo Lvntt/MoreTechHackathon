@@ -9,7 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.yandex.mapkit.MapKitFactory
-import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.ChatScreen
 import ru.phrogs.moretechhackathon.presentation.ui.navigation.MoreTechNavigation
 import ru.phrogs.moretechhackathon.presentation.ui.theme.MoreTechHackathonTheme
 
@@ -26,7 +25,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    ChatScreen()
+                    MoreTechNavigation(navController = navController, context = this)
                 }
             }
         }

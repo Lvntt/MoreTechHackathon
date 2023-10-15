@@ -1,5 +1,6 @@
 package ru.phrogs.moretechhackathon.presentation.ui.screen.map.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -156,11 +157,11 @@ fun BankOfficeContent(
         ) {
             when (load) {
                 LoadType.LOW -> {
-//                    Image(
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.low_load),
-//                        modifier = Modifier.size(IconSize),
-//                        contentDescription = null
-//                    )
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.low_load),
+                        modifier = Modifier.size(IconSize),
+                        contentDescription = null
+                    )
                     Spacer(modifier = Modifier.width(Padding16))
                     Row {
                         Text(
@@ -176,11 +177,11 @@ fun BankOfficeContent(
                     }
                 }
                 LoadType.MEDIUM -> {
-//                    Image(
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.medium_load),
-//                        modifier = Modifier.size(IconSize),
-//                        contentDescription = null
-//                    )
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.medium_load),
+                        modifier = Modifier.size(IconSize),
+                        contentDescription = null
+                    )
                     Spacer(modifier = Modifier.width(Padding16))
                     Row {
                         Text(
@@ -196,11 +197,11 @@ fun BankOfficeContent(
                     }
                 }
                 LoadType.HIGH -> {
-//                    Image(
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.high_load),
-//                        modifier = Modifier.size(IconSize),
-//                        contentDescription = null
-//                    )
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.high_load),
+                        modifier = Modifier.size(IconSize),
+                        contentDescription = null
+                    )
                     Spacer(modifier = Modifier.width(Padding16))
                     Row {
                         Text(
