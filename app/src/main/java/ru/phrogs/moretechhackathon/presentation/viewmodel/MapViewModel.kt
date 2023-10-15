@@ -56,20 +56,19 @@ class MapViewModel(
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
-            lastLocationResult = p0
-            updateLocation()
+            for (location in p0.locations) {
+                _currentLocationState.value = Point(location.latitude, location.longitude)
+            }
         }
     }
     private val locationRequest =
         LocationRequest.Builder(5000).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build()
-    private lateinit var lastLocationResult: LocationResult
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
-    var lastSavedCameraPosition = CameraPosition(
+    val startCameraPosition = CameraPosition(
         Point(55.751225, 37.629540), 10.0f, 150.0f, 0f
     )
-    var forceRedraw = mutableStateOf(false)
 
     val routeState: State<RouteInfo?>
         get() = _routeState
@@ -104,16 +103,6 @@ class MapViewModel(
                 }
             }
         }
-    }
-
-    private fun updateLocation() {
-        for (location in lastLocationResult.locations) {
-            _currentLocationState.value = Point(location.latitude, location.longitude)
-        }
-    }
-
-    fun forceUpdateLocation() {
-        updateLocation()
     }
 
     fun loadBankData(bankId: Int) {
@@ -191,7 +180,7 @@ class MapViewModel(
         )
     }
 
-    fun kmDistanceBetweenTwoPoints(first: Point, second: Point): Double {
+    private fun kmDistanceBetweenTwoPoints(first: Point, second: Point): Double {
         return acos(
             (sin(Math.toRadians(first.latitude)) * sin(Math.toRadians(second.latitude))) + (cos(
                 Math.toRadians(first.latitude)
