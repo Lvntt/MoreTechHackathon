@@ -58,4 +58,19 @@ Backend к проекту: https://github.com/StaZisS/VTB-Tech/tree/master
 + Material3
 
 # Скриншоты проекта
+<p>
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/5dde70db-93f7-4762-a852-3b086eb243f1" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/b94ea0cb-0ca4-4a02-a255-7fd96f683655" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/9bb21dbf-73ec-4e9a-bf9b-6bbcced28aaa" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/ae6818d1-7aca-46e5-888e-7852bd3a7dcf" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/b81112e2-af4c-4587-892a-994514029916" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/45498bb9-3622-4378-83e4-a7d43da0272d" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/d8dbb391-1344-4029-ada6-c3b7f683b55d" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/c3ea66e6-5dda-4d5c-b769-914d4de414df" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/fe3b2b94-c3d3-4230-9fc4-a77e36bd8cc0" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/62768381-14c9-45ef-8cc8-c2069d17f442" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/14253457-dada-49c8-968a-1f8a92f2d149" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/e02ba381-aa3f-4516-a1cc-3ebd35c3c15f" width="250" height="540">
+    <img src="https://github.com/Lvntt/MoreTechHackathon/assets/53006125/d3ec6f7b-d306-4244-844e-c998868b5204" width="250" height="540">
+</p>
 
