@@ -5,4 +5,15 @@
     <string name="drive">Доехать</string>
     <string name="where">Куда: %1$s</string>
     <string name="route_time">Время в дороге: ~%1$d минут</string>
+    <string name="selectServices">Выбрать услуги</string>
+    <string name="viewBanks">Посмотреть отделения</string>
+    <string name="clientTypeQuestion">Вы - физическое или юридическое лицо?</string>
+    <string name="continueButtonText">Продолжить</string>
+    <string name="individual">Физлицо</string>
+    <string name="legal">Юрлицо</string>
+    <string name="servicesSelectionTitle">С какой целью Вы хотите посетить банк?</string>
+    <string name="disabilityTitle">Если у вас есть какие-либо ограничения жизнедеятельности, отметьте это</string>
+    <string name="visionProblems">Нарушения зрения</string>
+    <string name="movementProblems">Ограничения в передвижении</string>
+    <string name="noDisability">Нет ограничений</string>
 </resources>

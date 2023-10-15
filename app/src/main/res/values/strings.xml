@@ -19,4 +19,15 @@
     <string name="drive">Drive</string>
     <string name="where">Where: %1$s</string>
     <string name="route_time">Time on the road: ~%1$d mins</string>
+    <string name="selectServices">Select services</string>
+    <string name="viewBanks">View bank branches</string>
+    <string name="clientTypeQuestion">Are you an individual or a legal entity?</string>
+    <string name="continueButtonText">Continue</string>
+    <string name="individual">Individual</string>
+    <string name="legal">Legal</string>
+    <string name="servicesSelectionTitle">For what purpose do you want to visit the bank?</string>
+    <string name="disabilityTitle">If you have any disabilities, please select them</string>
+    <string name="visionProblems">Vision problems</string>
+    <string name="movementProblems">Movement problems</string>
+    <string name="noDisability">No disabilities</string>
 </resources>
