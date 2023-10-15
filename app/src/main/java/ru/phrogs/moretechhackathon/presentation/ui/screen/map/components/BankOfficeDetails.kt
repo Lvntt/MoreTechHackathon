@@ -1,6 +1,5 @@
 package ru.phrogs.moretechhackathon.presentation.ui.screen.map.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -51,7 +51,7 @@ import ru.phrogs.moretechhackathon.presentation.ui.theme.PaddingSmall
 // TODO add open hours for individuals
 @Composable
 fun BankOfficeDetails(
-    distanceFromClient: Float,
+    distanceFromClient: Double,
     address: String,
     individualsLoad: LoadType,
     entitiesLoad: LoadType,
@@ -60,14 +60,16 @@ fun BankOfficeDetails(
     todayOpenHours: OpenHoursElement,
     availableForBlind: Boolean,
     metroStation: List<String>?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRouteClick: () -> Unit = {}
 ) {
     var isIndividual by remember { mutableStateOf(true) }
 
     Column(
         modifier = modifier
             .background(WhiteBlue)
-            .padding(PaddingLarge)
+            .padding(end = PaddingLarge, start = PaddingLarge, bottom = PaddingLarge)
+            .safeContentPadding()
             .verticalScroll(rememberScrollState())
     ) {
         Row(
@@ -119,14 +121,16 @@ fun BankOfficeDetails(
                 openHours = openHoursIndividual,
                 todayOpenHours = todayOpenHours,
                 availableForBlind = availableForBlind,
-                metroStation = metroStation
+                metroStation = metroStation,
+                onRouteClick = onRouteClick
             )
             false -> BankOfficeContent(
                 load = entitiesLoad,
                 openHours = openHours,
                 todayOpenHours = todayOpenHours,
                 availableForBlind = availableForBlind,
-                metroStation = metroStation
+                metroStation = metroStation,
+                onRouteClick = onRouteClick
             )
         }
     }
@@ -139,7 +143,8 @@ fun BankOfficeContent(
     todayOpenHours: OpenHoursElement,
     availableForBlind: Boolean,
     metroStation: List<String>?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRouteClick: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -151,11 +156,11 @@ fun BankOfficeContent(
         ) {
             when (load) {
                 LoadType.LOW -> {
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.low_load),
-                        modifier = Modifier.size(IconSize),
-                        contentDescription = null
-                    )
+//                    Image(
+//                        imageVector = ImageVector.vectorResource(id = R.drawable.low_load),
+//                        modifier = Modifier.size(IconSize),
+//                        contentDescription = null
+//                    )
                     Spacer(modifier = Modifier.width(Padding16))
                     Row {
                         Text(
@@ -171,11 +176,11 @@ fun BankOfficeContent(
                     }
                 }
                 LoadType.MEDIUM -> {
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.medium_load),
-                        modifier = Modifier.size(IconSize),
-                        contentDescription = null
-                    )
+//                    Image(
+//                        imageVector = ImageVector.vectorResource(id = R.drawable.medium_load),
+//                        modifier = Modifier.size(IconSize),
+//                        contentDescription = null
+//                    )
                     Spacer(modifier = Modifier.width(Padding16))
                     Row {
                         Text(
@@ -191,11 +196,11 @@ fun BankOfficeContent(
                     }
                 }
                 LoadType.HIGH -> {
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.high_load),
-                        modifier = Modifier.size(IconSize),
-                        contentDescription = null
-                    )
+//                    Image(
+//                        imageVector = ImageVector.vectorResource(id = R.drawable.high_load),
+//                        modifier = Modifier.size(IconSize),
+//                        contentDescription = null
+//                    )
                     Spacer(modifier = Modifier.width(Padding16))
                     Row {
                         Text(
@@ -300,7 +305,7 @@ fun BankOfficeContent(
         AccentButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.make_a_route),
-            onClick = { /*TODO*/ }
+            onClick = onRouteClick
         )
     }
 }
@@ -309,7 +314,7 @@ fun BankOfficeContent(
 @Composable
 fun BankOfficeDetailsPreview() {
     BankOfficeDetails(
-        distanceFromClient = 25.0f,
+        distanceFromClient = 25.0,
         address = "119049, г. Москва, Ленинский пр-т, д. 11, стр. 1",
         individualsLoad = LoadType.LOW,
         entitiesLoad = LoadType.LOW,

@@ -1,6 +1,9 @@
 package ru.phrogs.moretechhackathon.data.repository
 
 import ru.phrogs.moretechhackathon.domain.entity.BankCoordinates
+import ru.phrogs.moretechhackathon.domain.entity.BankInfo
+import ru.phrogs.moretechhackathon.domain.entity.OpenHours
+import ru.phrogs.moretechhackathon.domain.entity.OpenHoursElement
 import ru.phrogs.moretechhackathon.domain.repository.BankRepository
 
 class BankRepositoryImpl : BankRepository {
@@ -285,6 +288,67 @@ class BankRepositoryImpl : BankRepository {
             BankCoordinates(427708,55.427708,37.104725),
             BankCoordinates(421104,55.421104,38.260525),
             BankCoordinates(419247,55.419247,37.570042)
+        )
+    }
+
+    override suspend fun getBankInfoById(bankId: Int): BankInfo {
+        return BankInfo(
+            salePointName = "ДО «Ленинский проспект» Филиала № 7701 Банка ВТБ (ПАО)",
+            address = "119049, г. Москва, Ленинский пр-т, д. 11, стр. 1",
+            salePointCode = "1234",
+            status = "открытая",
+            openHours = OpenHours(
+                listOf(
+                    OpenHoursElement(
+                        days = "пн",
+                        hours = "09:00 - 18:00"
+                    ),
+                    OpenHoursElement(
+                        days = "вт",
+                        hours = "09:00 - 18:00"
+                    ),
+                    OpenHoursElement(
+                        days = "ср",
+                        hours = "09:00 - 18:00"
+                    ),
+                    OpenHoursElement(
+                        days = "чт",
+                        hours = "09:00 - 18:00"
+                    ),
+                    OpenHoursElement(
+                        days = "пт",
+                        hours = "09:00 - 18:00"
+                    ),
+                )
+            ),
+            openHoursIndividual = OpenHours(
+                listOf(
+                    OpenHoursElement(
+                        days = "пн",
+                        hours = "09:00 - 20:00"
+                    ),
+                    OpenHoursElement(
+                        days = "вт",
+                        hours = "09:00 - 20:00"
+                    ),
+                    OpenHoursElement(
+                        days = "ср",
+                        hours = "09:00 - 20:00"
+                    ),
+                    OpenHoursElement(
+                        days = "чт",
+                        hours = "09:00 - 20:00"
+                    ),
+                    OpenHoursElement(
+                        days = "пт",
+                        hours = "09:00 - 18:00"
+                    ),
+                )
+            ),
+            hasRamp = true,
+            latitude = 55.723206f,
+            longitude = 37.603947f,
+            metroStation = "Октябрьская (Кольцевая линия)"
         )
     }
 }

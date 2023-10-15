@@ -21,6 +21,7 @@ val DarkBlue = Color(0xFF002882)
 val Blue = Color(0xFF33539B)
 val LightBlue = Color(0xFF33539B)
 val WhiteBlue = Color(0xFFF4FBFF)
+val VeryLightBlue = Color(0xFFE5F6FF)
 val LightBlueVariant = Color(0xFF667EB4)
 
 val CardColor = Color(0xFFC2CDE7)

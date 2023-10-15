@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="chat">Чат</string>
     <string name="km_away">км от вас</string>
     <string name="individuals">Физлица</string>
     <string name="entities">Юрлица</string>
@@ -19,7 +20,6 @@
     <string name="vtb_office">Отделение ВТБ</string>
     <string name="vtb_atm">Банкомат ВТБ</string>
     <string name="more_info">Подробнее</string>
-    <string name="chat">Чат</string>
     <string name="bank_office">Отделение</string>
     <string name="works_around_the_clock">Работает круглосуточно</string>
     <string name="works_around_the_clock_desc">Пн-вс: круглосуточно</string>
@@ -31,4 +31,19 @@
     <string name="nfc_does_not_work">Недоступна оплата по NFC</string>
     <string name="qr_works">Работает с QR</string>
     <string name="qr_does_not_work">Не работает с QR</string>
+    <string name="route">Маршрут</string>
+    <string name="drive">Доехать</string>
+    <string name="where">Куда: %1$s</string>
+    <string name="route_time">Время в дороге: ~%1$d минут</string>
+    <string name="selectServices">Выбрать услуги</string>
+    <string name="viewBanks">Посмотреть отделения</string>
+    <string name="clientTypeQuestion">Вы - физическое или юридическое лицо?</string>
+    <string name="continueButtonText">Продолжить</string>
+    <string name="individual">Физлицо</string>
+    <string name="legal">Юрлицо</string>
+    <string name="servicesSelectionTitle">С какой целью Вы хотите посетить банк?</string>
+    <string name="disabilityTitle">Если у вас есть какие-либо ограничения жизнедеятельности, отметьте это</string>
+    <string name="visionProblems">Нарушения зрения</string>
+    <string name="movementProblems">Ограничения в передвижении</string>
+    <string name="noDisability">Нет ограничений</string>
 </resources>

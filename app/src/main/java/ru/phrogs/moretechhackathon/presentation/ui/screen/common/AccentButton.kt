@@ -20,21 +20,24 @@ fun AccentButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: ImageVector? = null
+    icon: ImageVector? = null,
+    containerColor: Color = DarkBlue,
+    contentColor: Color = Color.White,
+    textStyle: androidx.compose.ui.text.TextStyle = OnButtonTextStyle
 ) {
     Button(
         modifier = modifier,
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = DarkBlue,
-            contentColor = Color.White
+            containerColor = containerColor,
+            contentColor = contentColor
         ),
         shape = RoundedCornerShape(ButtonRoundedCornerSize),
         contentPadding = PaddingValues(ButtonContentPadding)
     ) {
         Text(
             text = text,
-            style = OnButtonTextStyle
+            style = textStyle
         )
         if (icon != null) {
             Icon(

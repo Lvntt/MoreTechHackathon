@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.ChatScreen
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.MapScreen
+import ru.phrogs.moretechhackathon.presentation.ui.screen.onboarding.OnboardingScreen
 
 object MoreTechDestinations {
     const val ONBOARDING = "onboarding"
@@ -22,10 +23,10 @@ fun MoreTechNavigation(
     navController: NavHostController, context: Context
 ) {
     NavHost(
-        navController = navController, startDestination = MoreTechDestinations.MAIN
+        navController = navController, startDestination = MoreTechDestinations.ONBOARDING
     ) {
         composable(MoreTechDestinations.ONBOARDING) {
-            // TODO
+            OnboardingScreen(navController = navController)
         }
         composable(MoreTechDestinations.SERVICE_SELECTION) {
             // TODO
