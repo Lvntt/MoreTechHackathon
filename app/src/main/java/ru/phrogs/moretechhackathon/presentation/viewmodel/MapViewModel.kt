@@ -28,9 +28,16 @@ import com.yandex.runtime.Error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.phrogs.moretechhackathon.domain.entity.Bank
+import ru.phrogs.moretechhackathon.domain.entity.BankEntityType
+import ru.phrogs.moretechhackathon.domain.entity.BankInfo
+import ru.phrogs.moretechhackathon.domain.entity.LoadType
+import ru.phrogs.moretechhackathon.domain.entity.OpenHours
+import ru.phrogs.moretechhackathon.domain.entity.OpenHoursElement
 import ru.phrogs.moretechhackathon.domain.usecase.GetAllBankCoordinatesUseCase
 import ru.phrogs.moretechhackathon.domain.usecase.GetBankInfoUseCase
 import ru.phrogs.moretechhackathon.presentation.uistate.map.BankInfoState
+import ru.phrogs.moretechhackathon.presentation.uistate.map.BankRatingState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.RouteInfo
 import kotlin.math.acos
@@ -49,6 +56,10 @@ class MapViewModel(
     val bankInfoState: State<BankInfoState>
         get() = _bankInfoState
     private val _bankInfoState = mutableStateOf<BankInfoState>(BankInfoState.Loading)
+
+    val bankRatingState: State<BankRatingState>
+        get() = _bankRatingState
+    private val _bankRatingState = mutableStateOf<BankRatingState>(BankRatingState.Loading)
 
     val currentLocationState: State<Point?>
         get() = _currentLocationState
@@ -75,10 +86,12 @@ class MapViewModel(
     private val _routeState = mutableStateOf<RouteInfo?>(null)
     private val drivingRouteListener = object : DrivingRouteListener {
         override fun onDrivingRoutes(p0: MutableList<DrivingRoute>) {
-            val route = p0.first()
-            _routeState.value = RouteInfo(
-                route.geometry, routeAddress, (route.routePosition.timeToFinish() / 60).toInt()
-            )
+            if (p0.isNotEmpty()) {
+                val route = p0.first()
+                _routeState.value = RouteInfo(
+                    route.geometry, routeAddress, (route.routePosition.timeToFinish() / 60).toInt()
+                )
+            }
         }
 
         override fun onDrivingRoutesError(p0: Error) {}
@@ -128,6 +141,86 @@ class MapViewModel(
                 }
             }
         }
+    }
+
+    fun loadRatingData() {
+        var distance = 0.0
+        _currentLocationState.value?.let {
+            distance = kmDistanceBetweenTwoPoints(
+                it, Point(55.723206, 37.603947)
+            )
+        }
+
+        _bankRatingState.value = BankRatingState.Content(
+            rating = listOf(
+                Bank(
+                    bankId = 1,
+                    bankInfo = BankInfo(
+                        salePointName = "ДО «Ленинский проспект» Филиала № 7701 Банка ВТБ (ПАО)",
+                        address = "119049, г. Москва, Ленинский пр-т, д. 11, стр. 1",
+                        salePointCode = "1234",
+                        status = "открытая",
+                        openHours = OpenHours(
+                            listOf(
+                                OpenHoursElement(
+                                    days = "пн",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "вт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "ср",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "чт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "пт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                            )
+                        ),
+                        openHoursIndividual = OpenHours(
+                            listOf(
+                                OpenHoursElement(
+                                    days = "пн",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "вт",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "ср",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "чт",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "пт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                            )
+                        ),
+                        hasRamp = true,
+                        latitude = 55.723206f,
+                        longitude = 37.603947f,
+                        metroStation = "Октябрьская (Кольцевая линия)"
+                    ),
+                    distance = distance,
+                    load = LoadType.MEDIUM,
+                    entityType = BankEntityType.OFFICE
+                )
+            )
+        )
+
+        return
     }
 
     fun startLocationTracking(context: Context) {

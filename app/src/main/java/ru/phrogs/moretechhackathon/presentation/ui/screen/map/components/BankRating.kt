@@ -28,6 +28,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ru.phrogs.moretechhackathon.R
+import ru.phrogs.moretechhackathon.domain.entity.Bank
 import ru.phrogs.moretechhackathon.domain.entity.BankEntity
 import ru.phrogs.moretechhackathon.domain.entity.BankEntityType
 import ru.phrogs.moretechhackathon.domain.entity.LoadType
@@ -51,7 +52,7 @@ import ru.phrogs.moretechhackathon.presentation.ui.theme.WhiteBlue
 
 @Composable
 fun BankRating(
-    rating: List<BankEntity>,
+    rating: List<Bank>,
     queryName: String?,
     onBankEntityClick: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -87,7 +88,7 @@ fun BankRating(
                 ),
                 modifier = Modifier
                     .clickable {
-                        onBankEntityClick(bankEntity.entityId)
+                        onBankEntityClick(bankEntity.bankId)
                     },
                 elevation = CardDefaults.cardElevation(defaultElevation = CardElevationSize),
             ) {
@@ -120,7 +121,7 @@ fun BankRating(
                             }
 
                             Text(
-                                text = bankEntity.address,
+                                text = bankEntity.bankInfo.address,
                                 style = LabelAccent,
                                 color = DarkBlue
                             )
@@ -141,9 +142,9 @@ fun BankRating(
 
                         Spacer(modifier = Modifier.width(Padding16))
 
-                        var distance = bankEntity.distanceFromClient.toString()
-                        if (bankEntity.distanceFromClient % 1.0 == 0.0) {
-                            distance = bankEntity.distanceFromClient.toInt().toString()
+                        var distance = bankEntity.distance.toString()
+                        if (bankEntity.distance % 1.0 == 0.0) {
+                            distance = bankEntity.distance.toInt().toString()
                         }
 
                         Text(
@@ -247,43 +248,4 @@ fun BankRating(
 
         Spacer(modifier = Modifier.height(Padding20))
     }
-}
-
-@Preview
-@Composable
-fun BankRatingPreview() {
-    BankRating(
-        rating = listOf(
-            BankEntity(
-                entityId = 1,
-                entityType = BankEntityType.OFFICE,
-                address = "Ленинский пр-т, д. 11, стр. 1",
-                distanceFromClient = 25.1f,
-                load = LoadType.LOW
-            ),
-            BankEntity(
-                entityId = 2,
-                entityType = BankEntityType.OFFICE,
-                address = "Ленинский пр-т, д. 11, стр. 1",
-                distanceFromClient = 31f,
-                load = LoadType.MEDIUM
-            ),
-            BankEntity(
-                entityId = 3,
-                entityType = BankEntityType.ATM,
-                address = "Ленинский пр-т, д. 11, стр. 1",
-                distanceFromClient = 36.6f,
-                load = LoadType.HIGH
-            ),
-            BankEntity(
-                entityId = 4,
-                entityType = BankEntityType.ATM,
-                address = "Ленинский пр-т, д. 11, стр. 1",
-                distanceFromClient = 36.6f,
-                load = LoadType.HIGH
-            ),
-        ),
-        queryName = "Кредит",
-        onBankEntityClick = {}
-    )
 }

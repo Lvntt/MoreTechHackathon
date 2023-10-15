@@ -55,6 +55,7 @@ import ru.phrogs.moretechhackathon.presentation.ui.common.lifecycle.observeAsSta
 import ru.phrogs.moretechhackathon.presentation.ui.common.state.LoadingProgress
 import ru.phrogs.moretechhackathon.presentation.ui.navigation.MoreTechDestinations
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.BankOfficeDetails
+import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.BankRating
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.ClusterView
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.MapHolder
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.MapView
@@ -63,6 +64,7 @@ import ru.phrogs.moretechhackathon.presentation.ui.theme.BANK_ICON_SCALE
 import ru.phrogs.moretechhackathon.presentation.ui.theme.PaddingMedium
 import ru.phrogs.moretechhackathon.presentation.ui.theme.WhiteBlue
 import ru.phrogs.moretechhackathon.presentation.uistate.map.BankInfoState
+import ru.phrogs.moretechhackathon.presentation.uistate.map.BankRatingState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.RouteInfo
 import ru.phrogs.moretechhackathon.presentation.viewmodel.MapViewModel
@@ -85,9 +87,12 @@ fun MapScreen(context: Context, navController: NavController) {
     val mapViewModel: MapViewModel = koinViewModel()
     val mapState by remember { mapViewModel.mapState }
     val bankInfoState by remember { mapViewModel.bankInfoState }
+    val bankRatingState by remember { mapViewModel.bankRatingState }
     val locationState by remember { mapViewModel.currentLocationState }
     var shouldShowBankInfoBottomSheet by remember { mutableStateOf(false) }
+    var shouldShowBankRatingBottomSheet by remember { mutableStateOf(false) }
     val bankInfoSheetState = rememberModalBottomSheetState()
+    val bankRatingSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val placeMarkTapListener = MapObjectTapListener { mapObject, _ ->
         val bankId = mapObject.userData as Int
@@ -117,7 +122,11 @@ fun MapScreen(context: Context, navController: NavController) {
                     route,
                     placeMarkTapListener,
                     mapViewModel::resetRoute,
-                    mapViewModel.startCameraPosition
+                    mapViewModel.startCameraPosition,
+                    onRecommendationsClick = {
+                        mapViewModel.loadRatingData()
+                        shouldShowBankRatingBottomSheet = true
+                    }
                 )
             }
 
@@ -136,6 +145,24 @@ fun MapScreen(context: Context, navController: NavController) {
             locationPermissionsState,
             locationState,
             mapViewModel
+        )
+    }
+
+    if (shouldShowBankRatingBottomSheet) {
+        BankRatingBottomSheet(
+            onDismissRequest = {
+                shouldShowBankRatingBottomSheet = false
+            },
+            onCloseButtonPressed = {
+                scope.launch { bankInfoSheetState.hide() }
+                    .invokeOnCompletion { shouldShowBankRatingBottomSheet = false }
+            },
+            bankRatingSheetState = bankRatingSheetState,
+            bankRatingState = bankRatingState,
+            openBankInfoBottomSheet = {
+                shouldShowBankInfoBottomSheet = true
+            },
+            mapViewModel = mapViewModel
         )
     }
 
@@ -192,6 +219,41 @@ private fun BankInfoBottomSheet(
 
                 BankInfoState.Error -> Unit
                 BankInfoState.Loading -> LoadingProgress(0.5f)
+            }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun BankRatingBottomSheet(
+    onDismissRequest: () -> Unit,
+    onCloseButtonPressed: () -> Unit,
+    bankRatingSheetState: SheetState,
+    bankRatingState: BankRatingState,
+    openBankInfoBottomSheet: () -> Unit,
+    mapViewModel: MapViewModel
+) {
+    ModalBottomSheet(
+        onDismissRequest = onDismissRequest,
+        sheetState = bankRatingSheetState,
+        containerColor = WhiteBlue,
+        windowInsets = WindowInsets(0, 0, 0, 0)
+    ) {
+        Crossfade(targetState = bankRatingState, label = "") { state ->
+            when (state) {
+                is BankRatingState.Content -> BankRating(
+                    rating = state.rating,
+                    queryName = "Кредит",
+                    onBankEntityClick = {
+                        mapViewModel.loadBankData(it)
+                        openBankInfoBottomSheet()
+                        onCloseButtonPressed()
+                    }
+                )
+
+                BankRatingState.Error -> Unit
+                BankRatingState.Loading -> LoadingProgress(0.5f)
             }
         }
     }
@@ -286,7 +348,8 @@ private fun MapContent(
     route: RouteInfo?,
     placeMarkTapListener: MapObjectTapListener,
     resetRouteInfo: () -> Unit,
-    startCameraPosition: CameraPosition
+    startCameraPosition: CameraPosition,
+    onRecommendationsClick: () -> Unit
 ) {
 
     MapView(
@@ -330,6 +393,9 @@ private fun MapContent(
                 Row {
                     Button(onClick = { navController.navigate(MoreTechDestinations.CHAT) }) {
                         Text(text = stringResource(id = R.string.chat))
+                    }
+                    Button(onClick = { onRecommendationsClick() }) {
+                        Text(text = stringResource(id = R.string.recommendations))
                     }
                 }
             }

@@ -1,18 +1,4 @@
 <resources>
-    <string name="km_away" translatable="false">км от вас</string>
-    <string name="bank_office" translatable="false">Отделение</string>
-    <string name="individuals" translatable="false">Физлица</string>
-    <string name="entities" translatable="false">Юрлица</string>
-    <string name="load_now" translatable="false">Сейчас загруженность: </string>
-    <string name="low" translatable="false">низкая</string>
-    <string name="medium" translatable="false">средняя</string>
-    <string name="high" translatable="false">высокая</string>
-    <string name="today_working_until" translatable="false">Сегодня работает до</string>
-    <string name="day_off" translatable="false">выходной</string>
-    <string name="day_off_today" translatable="false">Сегодня выходной</string>
-    <string name="accessible_limited_mobility" translatable="false">Подходит маломобильным</string>
-    <string name="accessible_limited_mobility_desc" translatable="false">Есть пандус и вызов сотрудника</string>
-    <string name="make_a_route" translatable="false">Проложить маршрут</string>
     <string name="app_name" translatable="false">MoreTechHackathon</string>
     <string name="km_away">км от вас</string>
     <string name="bank_office">Отделение</string>
@@ -35,6 +21,16 @@
     <string name="vtb_atm">Банкомат ВТБ</string>
     <string name="more_info">Подробнее</string>
     <string name="chat">Chat</string>
+    <string name="works_around_the_clock">Works around the clock</string>
+    <string name="works_around_the_clock_desc">Mon-Sun: 24 hours a day</string>
+    <string name="not_accessible_limited_mobility">Not suitable for people with limited mobility</string>
+    <string name="currently_unavailable">Currently unavailable</string>
+    <string name="accessible_blind">Accessible for people with visual impairments</string>
+    <string name="not_accessible_blind">Accessible for people with visual impairments</string>
+    <string name="nfc_works">Works with nfc</string>
+    <string name="nfc_does_not_work">Does not work with nfc</string>
+    <string name="qr_works">Works with QR</string>
+    <string name="qr_does_not_work">Does not work with QR</string>
     <string name="route">Route</string>
     <string name="drive">Drive</string>
     <string name="where">Where: %1$s</string>
@@ -50,4 +46,5 @@
     <string name="visionProblems">Vision problems</string>
     <string name="movementProblems">Movement problems</string>
     <string name="noDisability">No disabilities</string>
+    <string name="recommendations">Recommendations</string>
 </resources>
