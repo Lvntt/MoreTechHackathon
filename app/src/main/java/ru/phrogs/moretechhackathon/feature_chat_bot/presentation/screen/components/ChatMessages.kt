@@ -76,6 +76,7 @@ fun RegularChatMessages(
                         text = message,
                         color = if (messages.messageType == MessageType.USER_MESSAGE) UserMessageColor
                         else SystemMessageColor,
+                        style = ru.phrogs.moretechhackathon.presentation.ui.theme.Text,
                         modifier = Modifier.widthIn(max = 270.dp)
                     )
                 }
@@ -113,7 +114,11 @@ fun NavigationalChatMessages(
                     border = BorderStroke(2.dp, NavigationButtonBorderColor),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                 ) {
-                    Text(text = message, color = SystemMessageColor)
+                    Text(
+                        text = message,
+                        color = SystemMessageColor,
+                        style = ru.phrogs.moretechhackathon.presentation.ui.theme.Text
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
