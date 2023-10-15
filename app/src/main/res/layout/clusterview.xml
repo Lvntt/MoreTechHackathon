@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/clusterImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:scaleX="0.33"
+        android:scaleY="0.33"
+        android:src="@drawable/cluster">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/countText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/clusterImage"
+        android:layout_alignTop="@+id/clusterImage"
+        android:layout_alignEnd="@+id/clusterImage"
+        android:layout_alignBottom="@+id/clusterImage"
+        android:gravity="center"
+        android:scaleX="0.33"
+        android:scaleY="0.33"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        tools:text="24" />
+</RelativeLayout>
