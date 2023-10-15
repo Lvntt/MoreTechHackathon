@@ -14,6 +14,26 @@
     <string name="accessible_limited_mobility_desc" translatable="false">Есть пандус и вызов сотрудника</string>
     <string name="make_a_route" translatable="false">Проложить маршрут</string>
     <string name="app_name" translatable="false">MoreTechHackathon</string>
+    <string name="km_away">км от вас</string>
+    <string name="bank_office">Отделение</string>
+    <string name="individuals">Физлица</string>
+    <string name="entities">Юрлица</string>
+    <string name="load_now">Сейчас загруженность: </string>
+    <string name="low">низкая</string>
+    <string name="medium">средняя</string>
+    <string name="high">высокая</string>
+    <string name="today_working_until">Сегодня работает до</string>
+    <string name="day_off">выходной</string>
+    <string name="day_off_today">Сегодня выходной</string>
+    <string name="accessible_limited_mobility">Подходит маломобильным</string>
+    <string name="accessible_limited_mobility_desc">Есть пандус и вызов сотрудника</string>
+    <string name="make_a_route">Проложить маршрут</string>
+    <string name="bank_offices">Отделения</string>
+    <string name="rating_desc">Мы подобрали для Вас подходящие отделения ВТБ с учетом Вашего местоположения и загруженности банка</string>
+    <string name="for_service">по услуге</string>
+    <string name="vtb_office">Отделение ВТБ</string>
+    <string name="vtb_atm">Банкомат ВТБ</string>
+    <string name="more_info">Подробнее</string>
     <string name="chat">Chat</string>
     <string name="route">Route</string>
     <string name="drive">Drive</string>
