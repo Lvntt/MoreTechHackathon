@@ -24,3 +24,4 @@ val WhiteBlue = Color(0xFFF4FBFF)
 val LightBlueVariant = Color(0xFF667EB4)
 
 val CardColor = Color(0xFFC2CDE7)
+val Error = Color(0xFFE62632)
