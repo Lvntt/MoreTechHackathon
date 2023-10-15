@@ -46,4 +46,5 @@
     <string name="visionProblems">Нарушения зрения</string>
     <string name="movementProblems">Ограничения в передвижении</string>
     <string name="noDisability">Нет ограничений</string>
+    <string name="recommendations">Рекомендации</string>
 </resources>
