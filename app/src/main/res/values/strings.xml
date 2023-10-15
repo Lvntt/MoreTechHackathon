@@ -14,4 +14,10 @@
     <string name="accessible_limited_mobility">Подходит маломобильным</string>
     <string name="accessible_limited_mobility_desc">Есть пандус и вызов сотрудника</string>
     <string name="make_a_route">Проложить маршрут</string>
+    <string name="bank_offices">Отделения</string>
+    <string name="rating_desc">Мы подобрали для Вас подходящие отделения ВТБ с учетом Вашего местоположения и загруженности банка</string>
+    <string name="for_service">по услуге</string>
+    <string name="vtb_office">Отделение ВТБ</string>
+    <string name="vtb_atm">Банкомат ВТБ</string>
+    <string name="more_info">Подробнее</string>
 </resources>

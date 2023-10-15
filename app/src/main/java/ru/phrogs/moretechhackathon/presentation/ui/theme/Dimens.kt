@@ -14,4 +14,6 @@ val Padding20 = 20.dp
 
 val IconSize = 32.dp
 val ButtonRoundedCornerSize = 12.dp
+val CardRoundedCornerSize = 20.dp
 val ButtonContentPadding = 12.dp
+val CardElevationSize = 6.dp
