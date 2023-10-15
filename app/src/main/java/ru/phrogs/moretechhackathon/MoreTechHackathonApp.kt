@@ -6,7 +6,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import ru.phrogs.moretechhackathon.di.provideDomainModule
 import ru.phrogs.moretechhackathon.di.providePresentationModule
-import ru.phrogs.moretechhackathon.feature_chat_bot.di.provideChatDataModule
 import ru.phrogs.moretechhackathon.feature_chat_bot.di.provideChatDomainModule
 import ru.phrogs.moretechhackathon.feature_chat_bot.di.provideChatPresentationModule
 import ru.phrogs.moretechhackathon.feature_visit_history.di.provideHistoryDataModule
@@ -24,7 +23,6 @@ class MoreTechHackathonApp : Application() {
                 providePresentationModule(),
                 provideChatDomainModule(),
                 provideChatPresentationModule(),
-                provideChatDataModule(),
                 provideHistoryDataModule(),
                 provideHistoryDomainModule(),
                 provideHistoryPresentationModule(),
