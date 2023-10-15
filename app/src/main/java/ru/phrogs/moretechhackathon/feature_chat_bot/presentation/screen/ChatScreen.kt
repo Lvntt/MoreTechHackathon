@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,7 +34,7 @@ import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.ChatViewModel
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.screen.components.ChatMessages
 import ru.phrogs.moretechhackathon.feature_chat_bot.presentation.state.MessageType
 import ru.phrogs.moretechhackathon.presentation.ui.theme.SystemBackgroundColor
-import ru.phrogs.moretechhackathon.presentation.ui.theme.VTBGroupUI
+import ru.phrogs.moretechhackathon.presentation.ui.theme.Title
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,16 +43,23 @@ fun ChatScreen() {
     val message = rememberSaveable { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.fillMaxSize().systemBarsPadding()
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
     ) {
-        IconButton(onClick = viewModel::backFromChat, modifier = Modifier.align(Alignment.Start)) {
-            Icon(
-                painter = painterResource(id = R.drawable.keyboard_backspace),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(28.dp)
-                    .height(22.dp)
-            )
+        Box(modifier = Modifier.fillMaxWidth()){
+            Text(text = "Чат", style = Title, modifier = Modifier.align(Alignment.Center))
+            IconButton(
+                onClick = viewModel::backFromChat,
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.keyboard_backspace),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(30.dp)
+                )
+            }
         }
 
         LazyColumn(

@@ -6,17 +6,18 @@ import ru.phrogs.moretechhackathon.feature_chat_bot.domain.repository.ChatBotRep
 import java.util.UUID
 
 class ChatBotRepositoryImpl(
-//    private val chatBotApi: ChatBotApi
+    private val chatBotApi: ChatBotApi
 ) : ChatBotRepository {
     override suspend fun getServices(message: String): List<Pair<UUID, String>> {
-        delay(1000)
-        return listOf(
-            Pair(UUID.randomUUID(), "Оформить дебетовую карту"),
-            Pair(UUID.randomUUID(), "Оформить кредит"),
-            Pair(UUID.randomUUID(), "Погасить кредит"),
-            Pair(UUID.randomUUID(), "Погасить кредит"),
-            Pair(UUID.randomUUID(), "Погасить кредит"),
-            Pair(UUID.randomUUID(), "Погасить кредит")
-        )
+//        delay(1000)
+//        return listOf(
+//            Pair(UUID.randomUUID(), "Оформить дебетовую карту"),
+//            Pair(UUID.randomUUID(), "Оформить кредит"),
+//            Pair(UUID.randomUUID(), "Погасить кредит"),
+//            Pair(UUID.randomUUID(), "Погасить кредит"),
+//            Pair(UUID.randomUUID(), "Погасить кредит"),
+//            Pair(UUID.randomUUID(), "Погасить кредит")
+//        )
+        return chatBotApi.getServices(message = message)
     }
 }

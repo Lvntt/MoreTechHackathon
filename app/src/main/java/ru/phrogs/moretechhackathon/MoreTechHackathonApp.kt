@@ -6,8 +6,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import ru.phrogs.moretechhackathon.di.provideDomainModule
 import ru.phrogs.moretechhackathon.di.providePresentationModule
+import ru.phrogs.moretechhackathon.feature_chat_bot.di.provideChatDataModule
 import ru.phrogs.moretechhackathon.feature_chat_bot.di.provideChatDomainModule
 import ru.phrogs.moretechhackathon.feature_chat_bot.di.provideChatPresentationModule
+import ru.phrogs.moretechhackathon.feature_visit_history.di.provideHistoryDataModule
+import ru.phrogs.moretechhackathon.feature_visit_history.di.provideHistoryDomainModule
+import ru.phrogs.moretechhackathon.feature_visit_history.di.provideHistoryPresentationModule
 
 class MoreTechHackathonApp : Application() {
 
@@ -19,7 +23,11 @@ class MoreTechHackathonApp : Application() {
                 provideDomainModule(),
                 providePresentationModule(),
                 provideChatDomainModule(),
-                provideChatPresentationModule()
+                provideChatPresentationModule(),
+                provideChatDataModule(),
+                provideHistoryDataModule(),
+                provideHistoryDomainModule(),
+                provideHistoryPresentationModule(),
             )
         }
         //Yep, I leaked the API key, I know
