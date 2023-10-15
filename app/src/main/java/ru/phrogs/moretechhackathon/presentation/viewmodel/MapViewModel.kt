@@ -23,22 +23,32 @@ import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.directions.driving.DrivingSession.DrivingRouteListener
 import com.yandex.mapkit.directions.driving.VehicleOptions
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.runtime.Error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.phrogs.moretechhackathon.domain.usecase.GetAllBankCoordinatesUseCase
+import ru.phrogs.moretechhackathon.domain.usecase.GetBankInfoUseCase
+import ru.phrogs.moretechhackathon.presentation.uistate.map.BankInfoState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.MapState
+import ru.phrogs.moretechhackathon.presentation.uistate.map.RouteInfo
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
 
 class MapViewModel(
-    private val getAllBankCoordinatesUseCase: GetAllBankCoordinatesUseCase
+    private val getAllBankCoordinatesUseCase: GetAllBankCoordinatesUseCase,
+    private val getBankInfoUseCase: GetBankInfoUseCase
 ) : ViewModel() {
 
     val mapState: State<MapState>
         get() = _mapState
     private val _mapState = mutableStateOf<MapState>(MapState.Loading)
+
+    val bankInfoState: State<BankInfoState>
+        get() = _bankInfoState
+    private val _bankInfoState = mutableStateOf<BankInfoState>(BankInfoState.Loading)
 
     val currentLocationState: State<Point?>
         get() = _currentLocationState
@@ -46,39 +56,34 @@ class MapViewModel(
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(p0: LocationResult) {
             super.onLocationResult(p0)
-            lastLocationResult = p0
-            updateLocation()
+            for (location in p0.locations) {
+                _currentLocationState.value = Point(location.latitude, location.longitude)
+            }
         }
     }
     private val locationRequest =
         LocationRequest.Builder(5000).setPriority(Priority.PRIORITY_HIGH_ACCURACY).build()
-    private lateinit var lastLocationResult: LocationResult
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
-    var lastSavedCameraPosition = CameraPosition(
-        Point(55.751225, 37.629540),
-        10.0f,
-        150.0f,
-        0f
+    val startCameraPosition = CameraPosition(
+        Point(55.751225, 37.629540), 10.0f, 150.0f, 0f
     )
-    var forceRedraw = mutableStateOf(false)
 
-    val routeState: State<Polyline?>
+    val routeState: State<RouteInfo?>
         get() = _routeState
-    private val _routeState = mutableStateOf<Polyline?>(null)
-    val routeFinishTimeState: State<Double?>
-        get() = _routeFinishTimeState
-    private val _routeFinishTimeState = mutableStateOf<Double?>(null)
+    private val _routeState = mutableStateOf<RouteInfo?>(null)
     private val drivingRouteListener = object : DrivingRouteListener {
         override fun onDrivingRoutes(p0: MutableList<DrivingRoute>) {
             val route = p0.first()
-            _routeState.value = route.geometry
-            route.routePosition.timeToFinish()
+            _routeState.value = RouteInfo(
+                route.geometry, routeAddress, (route.routePosition.timeToFinish() / 60).toInt()
+            )
         }
 
         override fun onDrivingRoutesError(p0: Error) {}
     }
+    private var routeAddress = ""
 
     init {
         loadBankCoordinates()
@@ -100,14 +105,29 @@ class MapViewModel(
         }
     }
 
-    private fun updateLocation() {
-        for (location in lastLocationResult.locations) {
-            _currentLocationState.value = Point(location.latitude, location.longitude)
+    fun loadBankData(bankId: Int) {
+        if (bankInfoState.value is BankInfoState.Content && (bankInfoState.value as BankInfoState.Content).bankId == bankId) {
+            return
         }
-    }
-
-    fun forceUpdateLocation() {
-        updateLocation()
+        _bankInfoState.value = BankInfoState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val bankInfo = getBankInfoUseCase(bankId)
+                var distance = 0.0
+                _currentLocationState.value?.let {
+                    distance = kmDistanceBetweenTwoPoints(
+                        it, Point(bankInfo.latitude.toDouble(), bankInfo.longitude.toDouble())
+                    )
+                }
+                withContext(Dispatchers.Main) {
+                    _bankInfoState.value = BankInfoState.Content(bankId, bankInfo, distance)
+                }
+            } catch (_: Exception) {
+                withContext(Dispatchers.Main) {
+                    _bankInfoState.value = BankInfoState.Error
+                }
+            }
+        }
     }
 
     fun startLocationTracking(context: Context) {
@@ -134,7 +154,17 @@ class MapViewModel(
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    fun buildRoute(start: Point, destination: Point) {
+    fun showRoute(address: String, start: Point, destination: Point) {
+        resetRoute()
+        routeAddress = address
+        buildRoute(start, destination)
+    }
+
+    fun resetRoute() {
+        _routeState.value = null
+    }
+
+    private fun buildRoute(start: Point, destination: Point) {
         val drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
         val drivingOptions = DrivingOptions().apply {
             routesCount = 1
@@ -146,10 +176,19 @@ class MapViewModel(
             add(RequestPoint(destination, RequestPointType.WAYPOINT, null, null))
         }
         drivingRouter.requestRoutes(
-            points,
-            drivingOptions,
-            vehicleOptions,
-            drivingRouteListener
+            points, drivingOptions, vehicleOptions, drivingRouteListener
         )
+    }
+
+    private fun kmDistanceBetweenTwoPoints(first: Point, second: Point): Double {
+        return acos(
+            (sin(Math.toRadians(first.latitude)) * sin(Math.toRadians(second.latitude))) + (cos(
+                Math.toRadians(first.latitude)
+            ) * cos(Math.toRadians(second.latitude))) * (cos(
+                Math.toRadians(second.longitude) - Math.toRadians(
+                    first.longitude
+                )
+            ))
+        ) * 6371
     }
 }
