@@ -144,6 +144,7 @@ class MapViewModel(
     }
 
     fun loadRatingData() {
+        //Just some mock data added during the last minutes
         var distance = 0.0
         _currentLocationState.value?.let {
             distance = kmDistanceBetweenTwoPoints(
@@ -214,7 +215,135 @@ class MapViewModel(
                         metroStation = "Октябрьская (Кольцевая линия)"
                     ),
                     distance = distance,
+                    load = LoadType.LOW,
+                    entityType = BankEntityType.OFFICE
+                ),
+                Bank(
+                    bankId = 2,
+                    bankInfo = BankInfo(
+                        salePointName = "ДО «На Мытной» Филиала № 7701 Банка ВТБ (ПАО)",
+                        address = "119049, г. Москва, ул. Мытная, д. 7, стр. 1",
+                        salePointCode = "1235",
+                        status = "открытая",
+                        openHours = OpenHours(
+                            listOf(
+                                OpenHoursElement(
+                                    days = "пн",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "вт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "ср",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "чт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "пт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                            )
+                        ),
+                        openHoursIndividual = OpenHours(
+                            listOf(
+                                OpenHoursElement(
+                                    days = "пн",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "вт",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "ср",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "чт",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "пт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                            )
+                        ),
+                        hasRamp = true,
+                        latitude = 55.72214f,
+                        longitude = 37.61857f,
+                        metroStation = "Октябрьская (Кольцевая линия)"
+                    ),
+                    distance = distance,
                     load = LoadType.MEDIUM,
+                    entityType = BankEntityType.OFFICE
+                ),
+                Bank(
+                    bankId = 3,
+                    bankInfo = BankInfo(
+                        salePointName = "ДО «Хамовнический» Филиала № 7701 Банка ВТБ (ПАО)",
+                        address = "119270, г. Москва, ул. 3-Я Фрунзенская, д. 9",
+                        salePointCode = "1236",
+                        status = "открытая",
+                        openHours = OpenHours(
+                            listOf(
+                                OpenHoursElement(
+                                    days = "пн",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "вт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "ср",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "чт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "пт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                            )
+                        ),
+                        openHoursIndividual = OpenHours(
+                            listOf(
+                                OpenHoursElement(
+                                    days = "пн",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "вт",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "ср",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "чт",
+                                    hours = "09:00 - 20:00"
+                                ),
+                                OpenHoursElement(
+                                    days = "пт",
+                                    hours = "09:00 - 18:00"
+                                ),
+                            )
+                        ),
+                        hasRamp = true,
+                        latitude = 55.72124f,
+                        longitude = 37.576824f,
+                        metroStation = "Октябрьская (Кольцевая линия)"
+                    ),
+                    distance = distance,
+                    load = LoadType.HIGH,
                     entityType = BankEntityType.OFFICE
                 )
             )

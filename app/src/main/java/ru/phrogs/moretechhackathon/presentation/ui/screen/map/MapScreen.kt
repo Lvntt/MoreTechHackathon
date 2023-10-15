@@ -3,6 +3,7 @@ package ru.phrogs.moretechhackathon.presentation.ui.screen.map
 import android.Manifest
 import android.content.Context
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -62,6 +63,7 @@ import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.MapView
 import ru.phrogs.moretechhackathon.presentation.ui.screen.map.components.NavigationOverlay
 import ru.phrogs.moretechhackathon.presentation.ui.theme.BANK_ICON_SCALE
 import ru.phrogs.moretechhackathon.presentation.ui.theme.PaddingMedium
+import ru.phrogs.moretechhackathon.presentation.ui.theme.PaddingSmall
 import ru.phrogs.moretechhackathon.presentation.ui.theme.WhiteBlue
 import ru.phrogs.moretechhackathon.presentation.uistate.map.BankInfoState
 import ru.phrogs.moretechhackathon.presentation.uistate.map.BankRatingState
@@ -390,12 +392,15 @@ private fun MapContent(
                         contentDescription = null
                     )
                 }
-                Row {
+                Row(horizontalArrangement = Arrangement.spacedBy(PaddingSmall)) {
                     Button(onClick = { navController.navigate(MoreTechDestinations.CHAT) }) {
                         Text(text = stringResource(id = R.string.chat))
                     }
                     Button(onClick = { onRecommendationsClick() }) {
                         Text(text = stringResource(id = R.string.recommendations))
+                    }
+                    Button(onClick = { navController.navigate(MoreTechDestinations.SEARCH_HISTORY) }) {
+                        Text(text = stringResource(id = R.string.history))
                     }
                 }
             }

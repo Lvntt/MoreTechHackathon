@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">MoreTechHackathon</string>
     <string name="km_away">км от вас</string>
     <string name="bank_office">Отделение</string>
     <string name="individuals">Физлица</string>
@@ -14,6 +13,7 @@
     <string name="accessible_limited_mobility">Подходит маломобильным</string>
     <string name="accessible_limited_mobility_desc">Есть пандус и вызов сотрудника</string>
     <string name="make_a_route">Проложить маршрут</string>
+    <string name="app_name" translatable="false">MoreTechHackathon</string>
     <string name="bank_offices">Отделения</string>
     <string name="rating_desc">Мы подобрали для Вас подходящие отделения ВТБ с учетом Вашего местоположения и загруженности банка</string>
     <string name="for_service">по услуге</string>
@@ -21,16 +21,6 @@
     <string name="vtb_atm">Банкомат ВТБ</string>
     <string name="more_info">Подробнее</string>
     <string name="chat">Chat</string>
-    <string name="works_around_the_clock">Works around the clock</string>
-    <string name="works_around_the_clock_desc">Mon-Sun: 24 hours a day</string>
-    <string name="not_accessible_limited_mobility">Not suitable for people with limited mobility</string>
-    <string name="currently_unavailable">Currently unavailable</string>
-    <string name="accessible_blind">Accessible for people with visual impairments</string>
-    <string name="not_accessible_blind">Accessible for people with visual impairments</string>
-    <string name="nfc_works">Works with nfc</string>
-    <string name="nfc_does_not_work">Does not work with nfc</string>
-    <string name="qr_works">Works with QR</string>
-    <string name="qr_does_not_work">Does not work with QR</string>
     <string name="route">Route</string>
     <string name="drive">Drive</string>
     <string name="where">Where: %1$s</string>
@@ -46,5 +36,16 @@
     <string name="visionProblems">Vision problems</string>
     <string name="movementProblems">Movement problems</string>
     <string name="noDisability">No disabilities</string>
-    <string name="recommendations">Recommendations</string>
+    <string name="works_around_the_clock" translatable="false">Работает круглосуточно</string>
+    <string name="works_around_the_clock_desc" translatable="false">Пн-вс: круглосуточно</string>
+    <string name="not_accessible_limited_mobility" translatable="false">Не подходит маломобильным</string>
+    <string name="currently_unavailable" translatable="false">В данный момент недоступно</string>
+    <string name="accessible_blind" translatable="false">Подходит людям с нарушениями зрения</string>
+    <string name="not_accessible_blind" translatable="false">Не подходит людям с нарушениями зрения</string>
+    <string name="nfc_works" translatable="false">Доступна оплата по NFC</string>
+    <string name="nfc_does_not_work" translatable="false">Недоступна оплата по NFC</string>
+    <string name="qr_works" translatable="false">Работает с QR</string>
+    <string name="qr_does_not_work" translatable="false">Не работает с QR</string>
+    <string name="recommendations" translatable="false">Рекомендации</string>
+    <string name="history">History</string>
 </resources>
