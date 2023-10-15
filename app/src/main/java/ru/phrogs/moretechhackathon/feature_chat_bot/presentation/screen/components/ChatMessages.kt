@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,10 +38,9 @@ fun ChatMessages(
     messages: Messages,
     modifier: Modifier
 ) {
-    if (messages.messageType == MessageType.MESSAGE_TO_NAVIGATE) {
-        NavigationalChatMessages(messages = messages, modifier = modifier)
-    } else {
-        RegularChatMessages(messages = messages, modifier = modifier)
+    when (messages.messageType) {
+        MessageType.MESSAGE_TO_NAVIGATE -> NavigationalChatMessages(messages = messages, modifier = modifier)
+        else -> RegularChatMessages(messages = messages, modifier = modifier)
     }
 }
 
@@ -104,8 +104,7 @@ fun NavigationalChatMessages(
                     painter = painterResource(id = R.drawable.vtb_logo),
                     contentDescription = null,
                     modifier = Modifier
-                        .width(35.dp)
-                        .height(35.dp)
+                        .size(35.dp)
                         .align(Alignment.Bottom)
                         .padding(end = 8.dp)
                 )
